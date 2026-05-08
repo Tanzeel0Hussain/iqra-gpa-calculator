@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GPA Calculator - Iqra University</title>
+  <title>GPA Calculator - Iqra University Islamabad</title>
+  <style>
+    .type-toggle { display:flex; gap:0; margin-bottom:1.25rem; border-radius:10px; overflow:hidden; border:2px solid var(--navy); }
+    .type-btn { flex:1; padding:0.7rem 1rem; font-size:0.88rem; font-weight:700; cursor:pointer; border:none; background:white; color:var(--navy); transition:all 0.3s; font-family:'Inter',sans-serif; }
+    .type-btn:first-child { border-radius:8px 0 0 8px; }
+    .type-btn:last-child  { border-radius:0 8px 8px 0; }
+    .type-btn.active-type { background:var(--navy); color:white; }
+    .scale-banner { padding:0.75rem 1rem; border-radius:10px; border:1.5px solid; font-size:0.88rem; margin-bottom:1.25rem; }
+  </style>
   <meta name="description" content="Calculate your semester GPA using Iqra University's official grading scale. Add subjects, credit hours and grades instantly."/>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="icon" href="Iqra-University-Logo.png"/>
@@ -16,7 +24,7 @@
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
       <div class="nav-logo-text">
         <div class="title">IU GPA Calculator</div>
-        <div class="sub">Iqra University</div>
+        <div class="sub">Iqra University — Islamabad</div>
       </div>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -36,7 +44,7 @@
 <div class="page-hero">
   <div class="breadcrumb"><a href="index.html">Home</a> › GPA Calculator</div>
   <h1>📊 Semester GPA Calculator</h1>
-  <p>Calculate your GPA based on Iqra University's official grading system</p>
+  <p>Iqra University Islamabad — Select your student type for the correct grading scale</p>
 </div>
 
 <section class="section">
@@ -51,22 +59,13 @@
       </div>
       <div class="calc-body">
 
-        <div class="grading-info">
-          <h4>📌 IU Grading Scale (Quick Reference)</h4>
-          <div class="grade-scale">
-            <span class="grade-pill"><strong>A</strong> = 4.0</span>
-            <span class="grade-pill"><strong>A-</strong> = 3.7</span>
-            <span class="grade-pill"><strong>B+</strong> = 3.3</span>
-            <span class="grade-pill"><strong>B</strong> = 3.0</span>
-            <span class="grade-pill"><strong>B-</strong> = 2.7</span>
-            <span class="grade-pill"><strong>C+</strong> = 2.3</span>
-            <span class="grade-pill"><strong>C</strong> = 2.0</span>
-            <span class="grade-pill"><strong>C-</strong> = 1.7</span>
-            <span class="grade-pill"><strong>D+</strong> = 1.3</span>
-            <span class="grade-pill"><strong>D</strong> = 1.0</span>
-            <span class="grade-pill"><strong>F</strong> = 0.0</span>
-          </div>
+        <!-- STUDENT TYPE SELECTOR -->
+        <div class="type-toggle">
+          <button class="type-btn" id="btnOld" onclick="switchStudentType('old')">🎓 Old Students (Fail &lt; 60%)</button>
+          <button class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">🆕 New Students (Fail &lt; 50%)</button>
         </div>
+        <div class="scale-banner" id="scaleBanner">📌 <strong>New Students System:</strong> 11 grade levels — Fail below 50%</div>
+        <p style="font-size:0.8rem; color:var(--gray); margin-bottom:1rem;">Not sure? Check the <a href="grading.html" style="color:var(--navy); font-weight:600;">Grading Scale page</a> to find your system.</p>
 
         <table class="subjects-table" id="subjectsTable">
           <thead>

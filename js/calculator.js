@@ -1,18 +1,75 @@
-// ===== IU GRADING SCALE =====
-const gradePoints = {
-  'A':  4.00, 'A-': 3.70,
-  'B+': 3.30, 'B':  3.00, 'B-': 2.70,
-  'C+': 2.30, 'C':  2.00, 'C-': 1.70,
-  'D+': 1.30, 'D':  1.00,
-  'F':  0.00
+// ===== GRADING SCALES =====
+const gradingScales = {
+  old: {
+    // Old students: fail below 60%, only 6 grades
+    'A':  4.00,
+    'B+': 3.50,
+    'B':  3.00,
+    'C+': 2.50,
+    'C':  2.00,
+    'F':  0.00
+  },
+  new: {
+    // New students: fail below 50%, full 11-grade scale
+    'A':  4.0,
+    'A-': 3.7,
+    'B+': 3.3,
+    'B':  3.0,
+    'B-': 2.7,
+    'C+': 2.3,
+    'C':  2.0,
+    'C-': 1.7,
+    'D':  1.0,
+    'D+': 0.7,
+    'F':  0.0
+  }
 };
 
 let subjectCount = 0;
+let currentScale = 'new'; // default
+
+// ===== SWITCH STUDENT TYPE =====
+function switchStudentType(type) {
+  currentScale = type;
+
+  // Update button styles
+  document.getElementById('btnOld').classList.toggle('active-type', type === 'old');
+  document.getElementById('btnNew').classList.toggle('active-type', type === 'new');
+
+  // Show info banner
+  const banner = document.getElementById('scaleBanner');
+  if (type === 'old') {
+    banner.innerHTML = '⚠️ <strong>Old Students System:</strong> 6 grade levels — Fail below 60%';
+    banner.style.background = 'rgba(232,185,35,0.15)';
+    banner.style.borderColor = 'rgba(232,185,35,0.5)';
+    banner.style.color = '#92660a';
+  } else {
+    banner.innerHTML = '📌 <strong>New Students System:</strong> 11 grade levels — Fail below 50%';
+    banner.style.background = 'rgba(26,42,108,0.08)';
+    banner.style.borderColor = 'rgba(26,42,108,0.3)';
+    banner.style.color = 'var(--navy)';
+  }
+
+  // Rebuild all grade dropdowns
+  const rows = document.querySelectorAll('#subjectsBody tr');
+  rows.forEach(row => {
+    const id = row.id.replace('row-', '');
+    const gradeEl = document.getElementById(`grade-${id}`);
+    if (!gradeEl) return;
+    const prev = gradeEl.value;
+    gradeEl.innerHTML = '<option value="">-- Select Grade --</option>' + gradeOptions(prev);
+    updateRowPoints(id);
+  });
+
+  // Reset result
+  document.getElementById('resultBox').classList.remove('show');
+}
 
 // ===== BUILD GRADE OPTIONS =====
 function gradeOptions(selected = '') {
-  return Object.keys(gradePoints).map(g =>
-    `<option value="${g}" ${g === selected ? 'selected' : ''}>${g} (${gradePoints[g].toFixed(2)})</option>`
+  const scale = gradingScales[currentScale];
+  return Object.keys(scale).map(g =>
+    `<option value="${g}" ${g === selected ? 'selected' : ''}>${g} = ${scale[g].toFixed(2)}</option>`
   ).join('');
 }
 
@@ -24,7 +81,7 @@ function addSubject(name = '', credits = 3, grade = '') {
   row.id = `row-${subjectCount}`;
   row.innerHTML = `
     <td>
-      <input type="text" class="table-input" placeholder="e.g. Mathematics" 
+      <input type="text" class="table-input" placeholder="e.g. Mathematics"
              value="${name}" id="name-${subjectCount}"/>
     </td>
     <td>
@@ -54,20 +111,21 @@ function updateRowPoints(id) {
   const gradeEl = document.getElementById(`grade-${id}`);
   const creditsEl = document.getElementById(`credits-${id}`);
   const pointsEl = document.getElementById(`points-${id}`);
-  if (!gradeEl || !creditsEl) return;
+  if (!gradeEl || !creditsEl || !pointsEl) return;
   const g = gradeEl.value;
   const ch = parseInt(creditsEl.value);
-  if (g && gradePoints[g] !== undefined) {
-    const pts = (gradePoints[g] * ch).toFixed(2);
+  const scale = gradingScales[currentScale];
+  if (g && scale[g] !== undefined) {
+    const pts = (scale[g] * ch).toFixed(2);
     pointsEl.textContent = pts;
-    pointsEl.style.color = gradePoints[g] >= 2.0 ? 'var(--success)' : 'var(--danger)';
+    pointsEl.style.color = scale[g] >= 2.0 ? 'var(--success)' : (scale[g] > 0 ? 'var(--warning)' : 'var(--danger)');
   } else {
     pointsEl.textContent = '—';
     pointsEl.style.color = 'var(--navy)';
   }
 }
 
-// ===== REMOVE SUBJECT ROW =====
+// ===== REMOVE ROW =====
 function removeSubject(id) {
   const row = document.getElementById(`row-${id}`);
   if (row) {
@@ -82,10 +140,8 @@ function removeSubject(id) {
 function calculateGPA() {
   const tbody = document.getElementById('subjectsBody');
   const rows = tbody.querySelectorAll('tr');
-  let totalPoints = 0;
-  let totalCredits = 0;
-  let valid = true;
-  let count = 0;
+  const scale = gradingScales[currentScale];
+  let totalPoints = 0, totalCredits = 0, count = 0, skipped = 0;
 
   rows.forEach(row => {
     const id = row.id.replace('row-', '');
@@ -94,9 +150,9 @@ function calculateGPA() {
     if (!gradeEl || !creditsEl) return;
     const g = gradeEl.value;
     const ch = parseInt(creditsEl.value);
-    if (!g) { valid = false; return; }
-    if (gradePoints[g] !== undefined) {
-      totalPoints += gradePoints[g] * ch;
+    if (!g) { skipped++; return; }
+    if (scale[g] !== undefined) {
+      totalPoints += scale[g] * ch;
       totalCredits += ch;
       count++;
     }
@@ -106,59 +162,58 @@ function calculateGPA() {
     alert('⚠️ Please add at least one subject with a grade to calculate GPA.');
     return;
   }
-
-  if (!valid) {
-    const proceed = confirm('⚠️ Some subjects have no grade selected and will be skipped. Continue?');
-    if (!proceed) return;
+  if (skipped > 0) {
+    const go = confirm(`⚠️ ${skipped} subject(s) have no grade and will be skipped. Continue?`);
+    if (!go) return;
   }
 
   const gpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
-  const resultBox = document.getElementById('resultBox');
-  document.getElementById('resultGPA').textContent = gpa.toFixed(2);
+  document.getElementById('resultGPA').textContent = '0.00';
+  document.getElementById('resultGrade').textContent = getGPALabel(gpa);
   document.getElementById('totalCredits').textContent = totalCredits;
   document.getElementById('totalSubjects').textContent = count;
   document.getElementById('totalPoints').textContent = totalPoints.toFixed(2);
-  document.getElementById('resultGrade').textContent = getGPALabel(gpa);
+
+  const resultBox = document.getElementById('resultBox');
   resultBox.classList.add('show');
   resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  animateGPA(gpa);
-}
 
-// ===== ANIMATE GPA NUMBER =====
-function animateGPA(target) {
+  // Animate number
+  let cur = 0;
+  const inc = gpa / 50;
   const el = document.getElementById('resultGPA');
-  let current = 0;
-  const increment = target / 50;
-  const timer = setInterval(() => {
-    current += increment;
-    if (current >= target) { current = target; clearInterval(timer); }
-    el.textContent = current.toFixed(2);
+  const t = setInterval(() => {
+    cur += inc;
+    if (cur >= gpa) { cur = gpa; clearInterval(t); }
+    el.textContent = cur.toFixed(2);
   }, 20);
 }
 
 // ===== GPA LABEL =====
 function getGPALabel(gpa) {
-  if (gpa >= 3.70) return '🏆 Excellent – Summa Cum Laude';
-  if (gpa >= 3.50) return '⭐ Very Good – Dean\'s List Eligible';
-  if (gpa >= 3.00) return '👍 Good – Cum Laude';
+  if (gpa >= 3.70) return '🏆 Excellent — Summa Cum Laude';
+  if (gpa >= 3.50) return '⭐ Very Good — Dean\'s List Eligible';
+  if (gpa >= 3.00) return '👍 Good — Cum Laude';
   if (gpa >= 2.50) return '✅ Satisfactory Standing';
-  if (gpa >= 2.00) return '⚠️ Passing – Needs Improvement';
-  return '❌ Below Passing – Academic Probation Risk';
+  if (gpa >= 2.00) return '⚠️ Passing — Needs Improvement';
+  return '❌ Below Passing — Academic Probation Risk';
 }
 
-// ===== RESET CALCULATOR =====
+// ===== RESET =====
 function resetCalculator() {
   document.getElementById('subjectsBody').innerHTML = '';
   document.getElementById('resultBox').classList.remove('show');
   subjectCount = 0;
-  addSubject();
-  addSubject();
-  addSubject();
+  addSubject('Mathematics', 3, '');
+  addSubject('Programming', 3, '');
+  addSubject('English', 3, '');
 }
 
-// ===== INIT: Add 3 default rows =====
+// ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   addSubject('Mathematics', 3, '');
   addSubject('Programming', 3, '');
   addSubject('English', 3, '');
+  // Default: new student
+  switchStudentType('new');
 });
