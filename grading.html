@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grading Scale - Iqra University</title>
+  <meta name="description" content="Complete Iqra University grading scale with letter grades, grade points and percentage equivalents."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="Iqra-University-Logo.png"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <div class="nav-logo-text">
+        <div class="title">IU GPA Calculator</div>
+        <div class="sub">Iqra University</div>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="gpa-calculator.html">📊 GPA Calculator</a></li>
+      <li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li>
+      <li><a href="grading.html" class="active">📋 Grading Scale</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="contact.html">📧 Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> › Grading Scale</div>
+  <h1>📋 Grading Scale</h1>
+  <p>Official Iqra University grading system and letter grade equivalents</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>IU Official Grading System</h2>
+      <p>Iqra University follows a 4.0 GPA scale with the following letter grade conversions</p>
+      <div class="divider"></div>
+    </div>
+
+    <div style="max-width:800px; margin:0 auto;">
+      <div class="card fade-in" style="padding:0; overflow:hidden;">
+        <table class="grading-table" style="margin:0;">
+          <thead>
+            <tr>
+              <th>Letter Grade</th>
+              <th>Grade Points</th>
+              <th>Percentage</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="grade-badge" style="background:#1a6c2a">A</span></td>
+              <td><strong>4.00</strong></td>
+              <td>90% – 100%</td>
+              <td>⭐ Excellent</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#2a7c3a">A-</span></td>
+              <td><strong>3.70</strong></td>
+              <td>85% – 89%</td>
+              <td>⭐ Excellent</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#1a5c8c">B+</span></td>
+              <td><strong>3.30</strong></td>
+              <td>80% – 84%</td>
+              <td>👍 Very Good</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#1a6c9c">B</span></td>
+              <td><strong>3.00</strong></td>
+              <td>75% – 79%</td>
+              <td>👍 Good</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#2a7cac">B-</span></td>
+              <td><strong>2.70</strong></td>
+              <td>70% – 74%</td>
+              <td>👍 Good</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#7c5a1a">C+</span></td>
+              <td><strong>2.30</strong></td>
+              <td>65% – 69%</td>
+              <td>✅ Average</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#8c6a1a">C</span></td>
+              <td><strong>2.00</strong></td>
+              <td>60% – 64%</td>
+              <td>✅ Average</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#9c7a2a">C-</span></td>
+              <td><strong>1.70</strong></td>
+              <td>55% – 59%</td>
+              <td>✅ Average</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#8c4a1a">D+</span></td>
+              <td><strong>1.30</strong></td>
+              <td>50% – 54%</td>
+              <td>⚠️ Below Average</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#9c5a1a">D</span></td>
+              <td><strong>1.00</strong></td>
+              <td>45% – 49%</td>
+              <td>⚠️ Below Average</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#8c1a1a">F</span></td>
+              <td><strong>0.00</strong></td>
+              <td>Below 45%</td>
+              <td>❌ Fail</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#555">I</span></td>
+              <td><strong>—</strong></td>
+              <td>—</td>
+              <td>⏳ Incomplete</td>
+            </tr>
+            <tr>
+              <td><span class="grade-badge" style="background:#555">W</span></td>
+              <td><strong>—</strong></td>
+              <td>—</td>
+              <td>🚫 Withdrawn</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Notes -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem;">
+        <div class="card fade-in">
+          <div class="card-icon" style="background:linear-gradient(135deg,#10b981,#059669)">📌</div>
+          <h3>Important Notes</h3>
+          <ul style="color:var(--gray); font-size:0.9rem; line-height:1.8; padding-left:1.2rem;">
+            <li>Minimum passing grade is <strong>D (45%)</strong></li>
+            <li>Minimum CGPA to graduate is <strong>2.00</strong></li>
+            <li>Dean's List requires <strong>3.50+ GPA</strong></li>
+            <li>Grade <strong>I</strong> must be completed within 1 semester</li>
+          </ul>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon" style="background:linear-gradient(135deg,var(--navy),var(--navy-light))">🏆</div>
+          <h3>Honours Classification</h3>
+          <ul style="color:var(--gray); font-size:0.9rem; line-height:1.8; padding-left:1.2rem;">
+            <li><strong>3.70–4.00:</strong> Summa Cum Laude</li>
+            <li><strong>3.50–3.69:</strong> Magna Cum Laude</li>
+            <li><strong>3.00–3.49:</strong> Cum Laude</li>
+            <li><strong>2.50–2.99:</strong> Good Standing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:2rem;">
+        <a href="gpa-calculator.html" class="btn btn-primary" style="font-size:1rem; padding:0.9rem 2.5rem;">📊 Start Calculating Your GPA →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <p>Free GPA & CGPA calculator for Iqra University students.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Calculators</h4>
+      <ul class="footer-links">
+        <li><a href="gpa-calculator.html">Semester GPA</a></li>
+        <li><a href="cgpa-calculator.html">CGPA Calculator</a></li>
+        <li><a href="grading.html">Grading Scale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
+    <span>Made with ❤️ for IU Students</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

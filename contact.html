@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact - Iqra GPA Calculator</title>
+  <meta name="description" content="Contact us for feedback, suggestions or bug reports about the Iqra University GPA Calculator."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="Iqra-University-Logo.png"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <div class="nav-logo-text">
+        <div class="title">IU GPA Calculator</div>
+        <div class="sub">Iqra University</div>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="gpa-calculator.html">📊 GPA Calculator</a></li>
+      <li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li>
+      <li><a href="grading.html">📋 Grading Scale</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="contact.html" class="active">📧 Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> › Contact</div>
+  <h1>📧 Contact Us</h1>
+  <p>Have feedback or suggestions? We'd love to hear from you!</p>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid fade-in">
+      <div class="contact-info">
+        <div class="contact-card">
+          <div class="contact-icon">🎓</div>
+          <div>
+            <h4>University</h4>
+            <p>Iqra University<br/>Karachi, Pakistan</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">🌐</div>
+          <div>
+            <h4>Official Website</h4>
+            <p><a href="https://iqra.edu.pk" target="_blank" style="color:var(--accent-light);">www.iqra.edu.pk</a></p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">💻</div>
+          <div>
+            <h4>GitHub</h4>
+            <p><a href="https://github.com/Tanzeel0Hussain" target="_blank" style="color:var(--accent-light);">github.com/Tanzeel0Hussain</a></p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">⚡</div>
+          <div>
+            <h4>Response Time</h4>
+            <p>We typically respond within 24-48 hours to all messages.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3>Send a Message</h3>
+        <div id="formSuccess" style="display:none; background:linear-gradient(135deg,#10b981,#059669); color:white; padding:1rem 1.25rem; border-radius:10px; margin-bottom:1rem; font-weight:600;">
+          ✅ Message sent successfully! We'll get back to you soon.
+        </div>
+        <form id="contactForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name *</label>
+              <input type="text" id="firstName" class="form-control" placeholder="Muhammad" required/>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name *</label>
+              <input type="text" id="lastName" class="form-control" placeholder="Ali" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" class="form-control" placeholder="student@iqra.edu.pk" required/>
+          </div>
+          <div class="form-group">
+            <label for="studentId">Student ID (Optional)</label>
+            <input type="text" id="studentId" class="form-control" placeholder="e.g. IU-CS-21234"/>
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <select id="subject" class="form-control" required>
+              <option value="">Select a topic...</option>
+              <option value="feedback">💬 General Feedback</option>
+              <option value="bug">🐛 Bug Report</option>
+              <option value="feature">✨ Feature Request</option>
+              <option value="grading">📋 Grading System Query</option>
+              <option value="other">📝 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" class="form-control" placeholder="Write your message here..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; font-size:1rem; padding:0.9rem;">
+            📤 Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div style="margin-top:3rem;">
+      <div class="section-header fade-in">
+        <h2>Frequently Asked Questions</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="cards-grid">
+        <div class="card fade-in">
+          <div class="card-icon" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">❓</div>
+          <h3>Is this calculator official?</h3>
+          <p>This is a student-built tool that uses IU's official grading system. It is not an official university tool but follows the same grading criteria.</p>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon" style="background:linear-gradient(135deg,#0891b2,#0e7490)">🔒</div>
+          <h3>Is my data saved?</h3>
+          <p>No. All calculations happen in your browser only. We do not store, collect or share any of your academic data.</p>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon" style="background:linear-gradient(135deg,#059669,#047857)">📱</div>
+          <h3>Does it work on mobile?</h3>
+          <p>Yes! The calculator is fully responsive and works perfectly on smartphones, tablets and desktop computers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <p>Free GPA & CGPA calculator for Iqra University students.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Calculators</h4>
+      <ul class="footer-links">
+        <li><a href="gpa-calculator.html">Semester GPA</a></li>
+        <li><a href="cgpa-calculator.html">CGPA Calculator</a></li>
+        <li><a href="grading.html">Grading Scale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
+    <span>Made with ❤️ for IU Students</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>

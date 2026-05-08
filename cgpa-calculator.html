@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CGPA Calculator - Iqra University</title>
+  <meta name="description" content="Calculate your cumulative CGPA across all semesters at Iqra University. Track your overall academic performance."/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" href="Iqra-University-Logo.png"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <div class="nav-logo-text">
+        <div class="title">IU GPA Calculator</div>
+        <div class="sub">Iqra University</div>
+      </div>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="gpa-calculator.html">📊 GPA Calculator</a></li>
+      <li><a href="cgpa-calculator.html" class="active">📈 CGPA Calculator</a></li>
+      <li><a href="grading.html">📋 Grading Scale</a></li>
+      <li><a href="about.html">ℹ️ About</a></li>
+      <li><a href="contact.html">📧 Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="index.html">Home</a> › CGPA Calculator</div>
+  <h1>📈 CGPA Calculator</h1>
+  <p>Calculate your Cumulative GPA across all semesters at Iqra University</p>
+</div>
+
+<section class="section">
+  <div class="calc-wrapper">
+    <div class="calc-card">
+      <div class="calc-header">
+        <div class="calc-header-icon">📈</div>
+        <div>
+          <h2>Cumulative GPA Calculator</h2>
+          <p>Enter each semester's GPA and credit hours to calculate your overall CGPA</p>
+        </div>
+      </div>
+      <div class="calc-body">
+
+        <div class="grading-info">
+          <h4>📌 How CGPA is Calculated</h4>
+          <div class="grade-scale">
+            <span class="grade-pill">CGPA = <strong>Total Grade Points ÷ Total Credit Hours</strong></span>
+            <span class="grade-pill">Grade Points = <strong>GPA × Credit Hours</strong></span>
+          </div>
+        </div>
+
+        <div id="semestersList">
+          <!-- Semester rows added by JS -->
+        </div>
+
+        <div class="calc-actions" style="margin-top:1rem;">
+          <button class="btn btn-navy" onclick="addSemester()" id="addSemBtn">➕ Add Semester</button>
+          <button class="btn btn-accent" onclick="calculateCGPA()" id="calcCGPABtn">🔢 Calculate CGPA</button>
+          <button class="btn btn-ghost" onclick="resetCGPA()" id="resetCGPABtn">🔄 Reset</button>
+        </div>
+
+        <div class="result-box" id="cgpaResultBox">
+          <div class="result-gpa" id="cgpaResult">0.00</div>
+          <div class="result-label">Your Cumulative GPA (CGPA)</div>
+          <div class="result-grade" id="cgpaGrade"></div>
+          <div class="result-stats">
+            <div class="result-stat">
+              <span>Total Semesters</span>
+              <strong id="cgpaTotalSem">0</strong>
+            </div>
+            <div class="result-stat">
+              <span>Total Credit Hours</span>
+              <strong id="cgpaTotalCredits">0</strong>
+            </div>
+            <div class="result-stat">
+              <span>Total Grade Points</span>
+              <strong id="cgpaTotalPoints">0</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Standing Table -->
+    <div class="card" style="margin-top:2rem;">
+      <h3 style="font-family:'Poppins',sans-serif; font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:1rem;">📊 Academic Standing Chart</h3>
+      <table class="grading-table">
+        <thead>
+          <tr>
+            <th>CGPA Range</th>
+            <th>Academic Standing</th>
+            <th>Classification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>3.70 – 4.00</td><td>🏆 Excellent</td><td>Summa Cum Laude</td></tr>
+          <tr><td>3.50 – 3.69</td><td>⭐ Very Good</td><td>Magna Cum Laude / Dean's List</td></tr>
+          <tr><td>3.00 – 3.49</td><td>👍 Good</td><td>Cum Laude</td></tr>
+          <tr><td>2.50 – 2.99</td><td>✅ Satisfactory</td><td>Good Standing</td></tr>
+          <tr><td>2.00 – 2.49</td><td>⚠️ Average</td><td>Passing</td></tr>
+          <tr><td>Below 2.00</td><td>❌ Poor</td><td>Academic Probation</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="Iqra-University-Logo.png" alt="Iqra University"/>
+      <p>Free GPA & CGPA calculator for Iqra University students.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Calculators</h4>
+      <ul class="footer-links">
+        <li><a href="gpa-calculator.html">Semester GPA</a></li>
+        <li><a href="cgpa-calculator.html">CGPA Calculator</a></li>
+        <li><a href="grading.html">Grading Scale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
+    <span>Made with ❤️ for IU Students</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/cgpa.js"></script>
+</body>
+</html>
