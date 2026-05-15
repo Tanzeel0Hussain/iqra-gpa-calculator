@@ -15,8 +15,8 @@
     <a href="index.html" class="nav-logo">
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
       <div class="nav-logo-text">
-        <div class="title">IU GPA Calculator</div>
-        <div class="sub">Iqra University — Islamabad</div>
+        <div class="title">IUIC GPA Calculator</div>
+        <div class="sub">Iqra University Islamabad</div>
       </div>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -33,119 +33,178 @@
   </div>
 </nav>
 
-<div class="page-hero">
-  <div class="breadcrumb"><a href="index.html">Home</a> › CGPA Calculator</div>
-  <h1>📈 CGPA Calculator</h1>
-  <p>Calculate your Cumulative GPA across all semesters at Iqra University</p>
+<div class="hero" style="padding: 4rem 1.5rem;">
+  <div class="hero-content">
+    <div class="hero-badge">📈 Cumulative Tool</div>
+    <h1>Calculate Your <span>CGPA</span></h1>
+    <p>Track your cumulative GPA across all semesters accurately.</p>
+  </div>
 </div>
 
-<section class="section">
+<section class="section" style="padding-top: 0; margin-top: -3rem;">
   <div class="calc-wrapper">
     <div class="calc-card">
       <div class="calc-header">
         <div class="calc-header-icon">📈</div>
         <div>
           <h2>Cumulative GPA Calculator</h2>
-          <p>Enter each semester's GPA and credit hours to calculate your overall CGPA</p>
+          <p>Enter your semester GPAs or calculate them by subjects</p>
         </div>
       </div>
       <div class="calc-body">
 
-        <div class="grading-info">
-          <h4>📌 How CGPA is Calculated</h4>
-          <div class="grade-scale">
-            <span class="grade-pill">CGPA = <strong>Total Grade Points ÷ Total Credit Hours</strong></span>
-            <span class="grade-pill">Grade Points = <strong>GPA × Credit Hours</strong></span>
-          </div>
+        <div class="hero-badge" style="width: 100%; justify-content: center; margin-bottom: 2rem; background: var(--bg); border: 1px solid var(--primary-light); text-transform: none;">
+          💡 Tip: Click on a semester title or "Calculate Subjects" to enter grades.
+        </div>
+
+        <!-- STUDENT TYPE SELECTOR -->
+        <div class="type-toggle">
+          <button class="type-btn" id="btnOld" onclick="switchStudentType('old')">🎓 Old Students (Fail < 60%)</button>
+          <button class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">🆕 New Students (Fail < 50%)</button>
+        </div>
+        <div class="hero-badge" id="scaleBanner" style="width: 100%; justify-content: center; margin-bottom: 2rem; background: var(--bg); border: 1px solid var(--primary-light);">
+          📌 New Students System: 11 grade levels — Fail below 50%
         </div>
 
         <div id="semestersList">
           <!-- Semester rows added by JS -->
         </div>
 
-        <div class="calc-actions" style="margin-top:1rem;">
-          <button class="btn btn-navy" onclick="addSemester()" id="addSemBtn">➕ Add Semester</button>
+        <div class="calc-actions" style="margin-top:2rem;">
+          <button class="btn btn-primary" onclick="addSemester()" id="addSemBtn">➕ Add Semester</button>
           <button class="btn btn-accent" onclick="calculateCGPA()" id="calcCGPABtn">🔢 Calculate CGPA</button>
-          <button class="btn btn-ghost" onclick="resetCGPA()" id="resetCGPABtn">🔄 Reset</button>
+          <button class="btn btn-outline" style="border-width: 1px;" onclick="resetCGPA()" id="resetCGPABtn">🔄 Reset</button>
         </div>
 
         <div class="result-box" id="cgpaResultBox">
           <div class="result-gpa" id="cgpaResult">0.00</div>
           <div class="result-label">Your Cumulative GPA (CGPA)</div>
-          <div class="result-grade" id="cgpaGrade"></div>
+          <div class="result-grade" id="cgpaGrade" style="font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;"></div>
+          
           <div class="result-stats">
             <div class="result-stat">
               <span>Total Semesters</span>
               <strong id="cgpaTotalSem">0</strong>
             </div>
             <div class="result-stat">
-              <span>Total Credit Hours</span>
+              <span>Total Credits</span>
               <strong id="cgpaTotalCredits">0</strong>
             </div>
             <div class="result-stat">
-              <span>Total Grade Points</span>
+              <span>Grade Points</span>
               <strong id="cgpaTotalPoints">0</strong>
             </div>
+          </div>
+
+          <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center;">
+            <button class="btn btn-primary" onclick="openDownloadModal('cgpa')">📥 Download Result</button>
           </div>
         </div>
 
       </div>
     </div>
-
-    <!-- Standing Table -->
-    <div class="card" style="margin-top:2rem;">
-      <h3 style="font-family:'Poppins',sans-serif; font-size:1.1rem; font-weight:700; color:var(--navy); margin-bottom:1rem;">📊 Academic Standing Chart</h3>
-      <table class="grading-table">
-        <thead>
-          <tr>
-            <th>CGPA Range</th>
-            <th>Academic Standing</th>
-            <th>Classification</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>3.70 – 4.00</td><td>🏆 Excellent</td><td>Summa Cum Laude</td></tr>
-          <tr><td>3.50 – 3.69</td><td>⭐ Very Good</td><td>Magna Cum Laude / Dean's List</td></tr>
-          <tr><td>3.00 – 3.49</td><td>👍 Good</td><td>Cum Laude</td></tr>
-          <tr><td>2.50 – 2.99</td><td>✅ Satisfactory</td><td>Good Standing</td></tr>
-          <tr><td>2.00 – 2.49</td><td>⚠️ Average</td><td>Passing</td></tr>
-          <tr><td>Below 2.00</td><td>❌ Poor</td><td>Academic Probation</td></tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </section>
+
+<!-- SEMESTER SUBJECT CALCULATOR MODAL -->
+<div class="modal-overlay" id="semesterModal">
+  <div class="modal-container" style="max-width: 800px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalSemTitle">📘 Calculate Semester Subjects</h3>
+      <button class="modal-close" onclick="closeModal('semesterModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      
+      <div style="overflow-x: auto;">
+        <table class="subjects-table" id="modalTable">
+          <thead>
+            <tr>
+              <th style="width:45%">Subject</th>
+              <th style="width:25%">Credits</th>
+              <th style="width:25%">Grade</th>
+              <th style="width:5%"></th>
+            </tr>
+          </thead>
+          <tbody id="modalBody">
+            <!-- Modal rows -->
+          </tbody>
+        </table>
+      </div>
+      
+      <button class="btn btn-outline" style="width: 100%; border-style: dashed; margin-top: 1rem;" onclick="addModalSubject()">➕ Add Subject</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('semesterModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="applyModalGPA()">Apply to Semester</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD MODAL -->
+<div class="modal-overlay" id="downloadModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 class="modal-title">📄 Generate Report</h3>
+      <button class="modal-close" onclick="closeModal('downloadModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-light); margin-bottom: 1.5rem;">Enter your details to include them in the official result PDF.</p>
+      <div class="form-group" style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Full Name</label>
+        <input type="text" id="studentName" class="table-input" placeholder="Enter your full name" required>
+      </div>
+      <div class="form-group">
+        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Student ID (Reg No)</label>
+        <input type="text" id="studentID" class="table-input" placeholder="e.g. 12345" required>
+      </div>
+      <div id="downloadError" style="display:none; color:var(--danger); font-size:0.75rem; margin-top:0.5rem; font-weight:700;">
+        ⚠️ Please enter both Name and ID to download.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="padding: 0.75rem 1.5rem;" onclick="closeModal('downloadModal')">Cancel</button>
+      <button class="btn btn-primary" style="padding: 0.75rem 2rem;" onclick="generatePDF()">Download PDF</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
-      <p>Free GPA & CGPA calculator for Iqra University students.</p>
+      <p>A premium GPA calculator built by students, for students of Iqra University.</p>
     </div>
     <div class="footer-col">
       <h4>Calculators</h4>
       <ul class="footer-links">
-        <li><a href="gpa-calculator.html">Semester GPA</a></li>
-        <li><a href="cgpa-calculator.html">CGPA Calculator</a></li>
-        <li><a href="grading.html">Grading Scale</a></li>
+        <li><a href="gpa-calculator.html">📊 Semester GPA</a></li>
+        <li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li>
+        <li><a href="grading.html">📋 Grading Scale</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul class="footer-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+        <li><a href="about.html">ℹ️ About Project</a></li>
+        <li><a href="contact.html">📧 Contact Me</a></li>
+        <li><a href="https://iuisl.iqra.edu.pk/" target="_blank">🏛️ Iqra University</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
-    <span>Made with ❤️ for IU Students</span>
+    <span>© 2025 Iqra University Islamabad GPA Calculator. All rights reserved.</span>
+    <span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank">Tanzeel Hussain</a> for IUIC Students</span>
   </div>
 </footer>
 
+<!-- External Libraries for PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script src="js/main.js"></script>
+<script src="js/logo-data.js"></script>
 <script src="js/cgpa.js"></script>
+<script src="js/report.js"></script>
 </body>
 </html>

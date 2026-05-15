@@ -1,5 +1,7 @@
 // ===== CGPA CALCULATOR =====
 let semesterCount = 0;
+let activeModalSem = null;
+let modalSubjects = [];
 
 function getGPALabel(gpa) {
   if (gpa >= 3.70) return '🏆 Excellent – Summa Cum Laude';
@@ -17,21 +19,29 @@ function addSemester(gpa = '', credits = '') {
   div.className = 'semester-row';
   div.id = `sem-${semesterCount}`;
   div.innerHTML = `
-    <div class="semester-header">
-      <h4>📘 Semester ${semesterCount}</h4>
-      <button class="btn-remove" onclick="removeSemester(${semesterCount})" title="Remove">✕</button>
+    <div class="semester-header" onclick="openSemesterModal(${semesterCount})" style="cursor: pointer;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1;">
+        <span style="font-size: 1.25rem;" id="icon-${semesterCount}">📘</span>
+        <span class="sem-title-text" id="title-${semesterCount}" 
+               style="font-weight: 700; color: var(--primary); font-family: inherit; font-size: 1.1rem;">Semester ${semesterCount}</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button class="summer-btn" onclick="event.stopPropagation(); toggleSummer(${semesterCount})" id="summer-btn-${semesterCount}" title="Mark as Summer">☀️ Summer</button>
+        <span class="calc-badge">Calculate Subjects ➔</span>
+        <button class="btn-remove" onclick="event.stopPropagation(); removeSemester(${semesterCount})" title="Remove">✕</button>
+      </div>
     </div>
     <div class="semester-inputs">
       <div class="input-group">
-        <label>Semester GPA (0.00 – 4.00)</label>
+        <label>Semester GPA</label>
         <input type="number" class="table-input" id="sgpa-${semesterCount}"
-               min="0" max="4" step="0.01" placeholder="e.g. 3.50" value="${gpa}"
+               min="0" max="4" step="0.01" placeholder="0.00" value="${gpa}"
                oninput="validateGPA(this)"/>
       </div>
       <div class="input-group">
-        <label>Total Credit Hours</label>
+        <label>Total Credits</label>
         <input type="number" class="table-input" id="sch-${semesterCount}"
-               min="1" max="30" step="1" placeholder="e.g. 18" value="${credits}"/>
+               min="1" max="30" step="1" placeholder="0" value="${credits}"/>
       </div>
     </div>
   `;
@@ -41,15 +51,16 @@ function addSemester(gpa = '', credits = '') {
   div.style.opacity = '0';
   div.style.transform = 'translateY(15px)';
   setTimeout(() => {
-    div.style.transition = 'all 0.4s ease';
+    div.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
     div.style.opacity = '1';
     div.style.transform = 'translateY(0)';
   }, 10);
 }
 
 function validateGPA(input) {
-  if (parseFloat(input.value) > 4.0) input.value = 4.0;
-  if (parseFloat(input.value) < 0) input.value = 0;
+  let val = parseFloat(input.value);
+  if (val > 4.0) input.value = 4.0;
+  if (val < 0) input.value = 0;
 }
 
 function removeSemester(id) {
@@ -58,83 +69,195 @@ function removeSemester(id) {
     el.style.opacity = '0';
     el.style.transform = 'translateX(20px)';
     el.style.transition = 'all 0.3s ease';
-    setTimeout(() => el.remove(), 300);
+    setTimeout(() => {
+      el.remove();
+      updateSemesterLabels();
+    }, 300);
   }
+}
+
+function toggleSummer(id) {
+  const row = document.getElementById(`sem-${id}`);
+  const btn = document.getElementById(`summer-btn-${id}`);
+  const icon = document.getElementById(`icon-${id}`);
+  
+  row.classList.toggle('is-summer');
+  btn.classList.toggle('active');
+  
+  if (row.classList.contains('is-summer')) {
+    icon.textContent = '☀️';
+  } else {
+    icon.textContent = '📘';
+  }
+  
+  updateSemesterLabels();
+}
+
+function updateSemesterLabels() {
+  const rows = document.querySelectorAll('.semester-row');
+  let regularCount = 0;
+  
+  rows.forEach((row) => {
+    const titleEl = row.querySelector('.sem-title-text');
+    const isSummer = row.classList.contains('is-summer');
+    
+    if (isSummer) {
+      titleEl.textContent = "Summer Session";
+    } else {
+      regularCount++;
+      titleEl.textContent = `Semester ${regularCount}`;
+    }
+  });
+}
+
+// ===== MODAL LOGIC =====
+let modalStudentType = 'new';
+
+function switchStudentType(type) {
+  modalStudentType = type;
+  document.getElementById('btnOld').classList.toggle('active-type', type === 'old');
+  document.getElementById('btnNew').classList.toggle('active-type', type === 'new');
+
+  const banner = document.getElementById('scaleBanner');
+  if (type === 'old') {
+    banner.innerHTML = '⚠️ <strong>Old Students System:</strong> 6 grade levels — Fail below 60%';
+    banner.style.color = '#92660a';
+  } else {
+    banner.innerHTML = '📌 <strong>New Students System:</strong> 11 grade levels — Fail below 50%';
+    banner.style.color = 'var(--primary)';
+  }
+}
+
+function openSemesterModal(id) {
+  activeModalSem = id;
+  document.getElementById('modalSemTitle').textContent = `📘 Semester ${id} Calculator`;
+  document.getElementById('semesterModal').classList.add('open');
+  
+  // Clear modal and add 4 initial rows
+  document.getElementById('modalBody').innerHTML = '';
+  modalSubjects = [];
+  for(let i=0; i<4; i++) addModalSubject();
+}
+
+function addModalSubject() {
+  const tbody = document.getElementById('modalBody');
+  const tr = document.createElement('tr');
+  const id = Date.now() + Math.random();
+  tr.id = `m-row-${id}`;
+  tr.innerHTML = `
+    <td data-label="Subject"><input type="text" class="table-input" placeholder="Subject Name"></td>
+    <td data-label="Credits"><input type="number" class="table-input m-credits" value="3" min="1" max="6"></td>
+    <td data-label="Grade">
+      <select class="table-select m-grade">
+        ${getGradeOptions(modalStudentType)}
+      </select>
+    </td>
+    <td><button class="btn-remove" onclick="this.closest('tr').remove()">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function getGradeOptions(type) {
+  const newGrades = [
+    {g:'A',p:4.00}, {g:'A-',p:3.67}, {g:'B+',p:3.33}, {g:'B',p:3.00}, {g:'B-',p:2.67},
+    {g:'C+',p:2.33}, {g:'C',p:2.00}, {g:'C-',p:1.67}, {g:'D+',p:1.33}, {g:'D',p:1.00}, {g:'F',p:0.00}
+  ];
+  const oldGrades = [
+    {g:'A',p:4.00}, {g:'B+',p:3.50}, {g:'B',p:3.00}, {g:'C+',p:2.50}, {g:'C',p:2.00}, {g:'F',p:0.00}
+  ];
+  const grades = type === 'new' ? newGrades : oldGrades;
+  return grades.map(g => `<option value="${g.p}">${g.g} (${g.p})</option>`).join('');
+}
+
+function applyModalGPA() {
+  const rows = document.querySelectorAll('#modalBody tr');
+  let totalPoints = 0;
+  let totalCredits = 0;
+
+  rows.forEach(row => {
+    const credits = parseFloat(row.querySelector('.m-credits').value) || 0;
+    const gradePoints = parseFloat(row.querySelector('.m-grade').value) || 0;
+    totalPoints += gradePoints * credits;
+    totalCredits += credits;
+  });
+
+  if (totalCredits === 0) {
+    alert('Please add at least one subject with credit hours.');
+    return;
+  }
+
+  const gpa = totalPoints / totalCredits;
+  
+  // Apply to main row
+  const gpaInput = document.getElementById(`sgpa-${activeModalSem}`);
+  const creditsInput = document.getElementById(`sch-${activeModalSem}`);
+  
+  if (gpaInput && creditsInput) {
+    gpaInput.value = gpa.toFixed(2);
+    creditsInput.value = totalCredits;
+  }
+
+  closeModal('semesterModal');
 }
 
 function calculateCGPA() {
   let totalPoints = 0;
   let totalCredits = 0;
   let count = 0;
-  let hasError = false;
 
-  for (let i = 1; i <= semesterCount; i++) {
-    const gpaEl = document.getElementById(`sgpa-${i}`);
-    const chEl = document.getElementById(`sch-${i}`);
-    if (!gpaEl || !chEl) continue;
+  const rows = document.querySelectorAll('.semester-row');
+  rows.forEach(row => {
+    const id = row.id.split('-')[1];
+    const gpa = parseFloat(document.getElementById(`sgpa-${id}`).value);
+    const ch = parseFloat(document.getElementById(`sch-${id}`).value);
 
-    const gpa = parseFloat(gpaEl.value);
-    const ch = parseInt(chEl.value);
-
-    if (isNaN(gpa) || isNaN(ch) || ch <= 0) {
-      hasError = true;
-      continue;
+    if (!isNaN(gpa) && !isNaN(ch) && ch > 0) {
+      totalPoints += gpa * ch;
+      totalCredits += ch;
+      count++;
     }
-    if (gpa < 0 || gpa > 4.0) {
-      alert(`⚠️ Semester ${i}: GPA must be between 0.00 and 4.00`);
-      return;
-    }
-
-    totalPoints += gpa * ch;
-    totalCredits += ch;
-    count++;
-  }
+  });
 
   if (count === 0) {
-    alert('⚠️ Please fill in at least one semester with a valid GPA and credit hours.');
+    alert('Please fill in at least one semester.');
     return;
   }
 
-  if (hasError) {
-    const proceed = confirm('⚠️ Some semesters have incomplete data and will be skipped. Continue?');
-    if (!proceed) return;
-  }
+  const cgpa = totalPoints / totalCredits;
+  const resultBox = document.getElementById('cgpaResultBox');
+  const resultEl = document.getElementById('cgpaResult');
+  
+  resultBox.classList.add('show');
+  
+  // Animate
+  let current = 0;
+  const timer = setInterval(() => {
+    current += cgpa / 30;
+    if (current >= cgpa) {
+      current = cgpa;
+      clearInterval(timer);
+    }
+    resultEl.textContent = current.toFixed(2);
+  }, 20);
 
-  const cgpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
-
-  document.getElementById('cgpaResult').textContent = '0.00';
   document.getElementById('cgpaGrade').textContent = getGPALabel(cgpa);
   document.getElementById('cgpaTotalSem').textContent = count;
   document.getElementById('cgpaTotalCredits').textContent = totalCredits;
   document.getElementById('cgpaTotalPoints').textContent = totalPoints.toFixed(2);
 
-  const resultBox = document.getElementById('cgpaResultBox');
-  resultBox.classList.add('show');
   resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  // Animate number
-  let current = 0;
-  const inc = cgpa / 50;
-  const el = document.getElementById('cgpaResult');
-  const timer = setInterval(() => {
-    current += inc;
-    if (current >= cgpa) { current = cgpa; clearInterval(timer); }
-    el.textContent = current.toFixed(2);
-  }, 20);
 }
 
 function resetCGPA() {
   document.getElementById('semestersList').innerHTML = '';
-  document.getElementById('cgpaResultBox').classList.remove('show');
   semesterCount = 0;
-  addSemester();
-  addSemester();
-  addSemester();
+  for(let i=0; i<3; i++) addSemester();
+  document.getElementById('cgpaResultBox').classList.remove('show');
 }
 
-// ===== INIT: 3 default semesters =====
 document.addEventListener('DOMContentLoaded', () => {
-  addSemester();
-  addSemester();
-  addSemester();
+  if (document.getElementById('semestersList')) {
+    resetCGPA();
+    switchStudentType('new');
+  }
 });

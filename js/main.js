@@ -1,7 +1,18 @@
+// ===== MODAL CONTROL =====
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.add('open');
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.classList.remove('open');
+}
+
 // ===== MOBILE MENU =====
 function toggleMenu() {
   const navLinks = document.getElementById('navLinks');
-  navLinks.classList.toggle('open');
+  if (navLinks) navLinks.classList.toggle('open');
 }
 
 // Close menu when a link is clicked

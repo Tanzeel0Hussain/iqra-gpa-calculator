@@ -8,23 +8,18 @@
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="icon" href="Iqra-University-Logo.png"/>
   <style>
-    .tab-btns { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 2px solid var(--navy); }
+    .tab-btns { display: flex; gap: 4px; margin-bottom: 1.5rem; background: #edf2f7; padding: 4px; border-radius: 10px; }
     .tab-btn {
-      flex: 1; padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 700;
-      font-family: 'Inter', sans-serif; cursor: pointer; border: none;
-      background: white; color: var(--navy); transition: all 0.3s ease;
+      flex: 1; padding: 0.7rem 1rem; font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; border: none; border-radius: 8px;
+      background: transparent; color: var(--text-light); transition: all 0.2s;
     }
-    .tab-btn.active { background: var(--navy); color: white; }
-    .tab-btn:first-child { border-radius: 10px 0 0 10px; }
-    .tab-btn:last-child  { border-radius: 0 10px 10px 0; }
-    .tab-panel { display: none; animation: fadeInUp 0.4s ease; }
+    .tab-btn.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+    .tab-panel { display: none; animation: fadeIn 0.4s ease; }
     .tab-panel.active { display: block; }
-    .system-badge {
-      display: inline-block; padding: 0.4rem 1rem; border-radius: 20px;
-      font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
-    }
-    .badge-old { background: rgba(232,185,35,0.15); color: #92660a; border: 1px solid rgba(232,185,35,0.5); }
-    .badge-new { background: rgba(26,42,108,0.1); color: var(--navy); border: 1px solid rgba(26,42,108,0.3); }
+    
+    .badge-old { background: rgba(232,185,35,0.1); color: #92660a; border: 1px solid rgba(232,185,35,0.3); }
+    .badge-new { background: rgba(26,42,108,0.08); color: var(--primary); border: 1px solid rgba(26,42,108,0.2); }
   </style>
 </head>
 <body>
@@ -34,8 +29,8 @@
     <a href="index.html" class="nav-logo">
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
       <div class="nav-logo-text">
-        <div class="title">IU GPA Calculator</div>
-        <div class="sub">Iqra University — Islamabad</div>
+        <div class="title">IUIC GPA Calculator</div>
+        <div class="sub">Iqra University Islamabad</div>
       </div>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -141,11 +136,11 @@
       <!-- NEW STUDENTS TAB -->
       <div class="tab-panel" id="newPanel">
         <div class="card" style="padding:0; overflow:hidden;">
-          <div style="padding:1.25rem 1.5rem; background:linear-gradient(135deg,var(--navy-dark),var(--navy)); color:white; display:flex; align-items:center; gap:0.75rem;">
-            <span style="font-size:1.5rem;">🆕</span>
+          <div style="padding:1rem 1.25rem; background:var(--primary); color:white; display:flex; align-items:center; gap:0.75rem;">
+            <span style="font-size:1.25rem;">🆕</span>
             <div>
-              <strong style="font-size:1rem;">New Students Grading System</strong>
-              <div style="font-size:0.82rem; opacity:0.85; margin-top:0.2rem;">Fail below 50% — Full 11-grade scale</div>
+              <strong style="font-size:0.9rem;">New Students Grading System</strong>
+              <div style="font-size:0.75rem; opacity:0.8; margin-top:0.1rem;">Fail below 50% — Full 11-grade scale</div>
             </div>
           </div>
           <table class="grading-table" style="margin:0;">
@@ -242,9 +237,9 @@
       <!-- Common Section -->
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem;">
         <div class="card fade-in">
-          <div class="card-icon" style="background:linear-gradient(135deg,var(--navy),var(--navy-light))">🏆</div>
+          <div class="card-icon">🏆</div>
           <h3>Honours Classification</h3>
-          <ul style="color:var(--gray); font-size:0.88rem; line-height:1.9; padding-left:1.2rem;">
+          <ul style="color:var(--text-light); font-size:0.8rem; line-height:1.6; padding-left:1rem;">
             <li><strong>3.70 – 4.00:</strong> Summa Cum Laude</li>
             <li><strong>3.50 – 3.69:</strong> Magna Cum Laude</li>
             <li><strong>3.00 – 3.49:</strong> Cum Laude</li>
@@ -253,12 +248,12 @@
           </ul>
         </div>
         <div class="card fade-in">
-          <div class="card-icon" style="background:linear-gradient(135deg,#10b981,#059669)">📍</div>
+          <div class="card-icon" style="background:var(--success)">📍</div>
           <h3>Campus Information</h3>
-          <ul style="color:var(--gray); font-size:0.88rem; line-height:1.9; padding-left:1.2rem;">
+          <ul style="color:var(--text-light); font-size:0.8rem; line-height:1.6; padding-left:1rem;">
             <li>🏛️ <strong>Iqra University — Islamabad</strong></li>
             <li>📍 H-9, Islamabad, Pakistan</li>
-            <li>🌐 <a href="https://iqra.edu.pk" target="_blank" style="color:var(--navy);">iqra.edu.pk</a></li>
+            <li>🌐 <a href="https://iuisl.iqra.edu.pk/" target="_blank" style="color:var(--primary); text-decoration:none; font-weight:700;">iuisl.iqra.edu.pk</a></li>
             <li>📞 Available on official website</li>
           </ul>
         </div>
@@ -290,13 +285,13 @@
       <ul class="footer-links">
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+        <li><a href="https://iuisl.iqra.edu.pk/" target="_blank">Iqra University</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
-    <span>Made with ❤️ for IU Islamabad Students</span>
+    <span>© 2025 Iqra University Islamabad GPA Calculator. All rights reserved.</span>
+    <span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank">Tanzeel Hussain</a> for IUIC Students</span>
   </div>
 </footer>
 

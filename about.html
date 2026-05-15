@@ -7,6 +7,36 @@
   <meta name="description" content="Learn about the Iqra GPA Calculator tool built for Iqra University students."/>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="icon" href="Iqra-University-Logo.png"/>
+  <style>
+    .about-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .feature-card { background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #edf2f7; text-align: left; }
+    .feature-card .icon { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; }
+    .feature-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.8rem; color: var(--text-light); line-height: 1.5; }
+    
+    .dev-card { 
+      background: var(--primary); color: white; border-radius: 15px; 
+      padding: 2rem; display: flex; align-items: center; gap: 2rem;
+      margin: 2rem auto; max-width: 800px; position: relative; overflow: hidden;
+    }
+    .dev-card::after { 
+      content: ''; position: absolute; top: -50%; right: -10%; 
+      width: 300px; height: 300px; background: rgba(232,185,35,0.1); 
+      border-radius: 50%; z-index: 0; 
+    }
+    .dev-info { position: relative; z-index: 1; }
+    .dev-avatar { 
+      width: 100px; height: 100px; border-radius: 50%; 
+      background: var(--accent); border: 4px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 3rem;
+    }
+    .dev-info h2 { color: var(--accent); margin-bottom: 0.5rem; }
+    .dev-info p { font-size: 0.9rem; opacity: 0.9; line-height: 1.6; }
+    
+    @media (max-width: 768px) {
+      .dev-card { flex-direction: column; text-align: center; gap: 1rem; }
+    }
+  </style>
 </head>
 <body>
 
@@ -15,8 +45,8 @@
     <a href="index.html" class="nav-logo">
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
       <div class="nav-logo-text">
-        <div class="title">IU GPA Calculator</div>
-        <div class="sub">Iqra University — Islamabad</div>
+        <div class="title">IUIC GPA Calculator</div>
+        <div class="sub">Iqra University Islamabad</div>
       </div>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -36,65 +66,82 @@
 <div class="page-hero">
   <div class="breadcrumb"><a href="index.html">Home</a> › About</div>
   <h1>ℹ️ About This Tool</h1>
-  <p>Built with love for Iqra University students</p>
+  <p>Providing accurate academic tools for the student community</p>
 </div>
-
-<section class="section section-alt">
-  <div class="container">
-    <div class="about-grid fade-in">
-      <div class="about-img-wrap">
-        <img src="Iqra-University-Logo.png" alt="Iqra University Logo"/>
-        <p style="color:rgba(255,255,255,0.8); margin-top:1.5rem; font-size:0.95rem; line-height:1.7;">Iqra University is one of Pakistan's leading private universities, committed to quality education and academic excellence.</p>
-      </div>
-      <div class="about-content">
-        <h2>What is Iqra GPA Calculator?</h2>
-        <p>The <strong>Iqra GPA Calculator</strong> is a free, student-built web tool designed specifically for Iqra University students to calculate their semester GPA and cumulative CGPA quickly and accurately.</p>
-        <p>We use Iqra University's <strong>official 4.0 grading scale</strong> so you can always trust the results. No login required, no personal data collected — just open and calculate!</p>
-        <ul class="feature-list">
-          <li><span class="icon">✅</span><span><strong>100% Accurate</strong> — Uses IU's official grading system</span></li>
-          <li><span class="icon">⚡</span><span><strong>Instant Results</strong> — No loading, no waiting</span></li>
-          <li><span class="icon">📱</span><span><strong>Mobile Friendly</strong> — Works on all devices</span></li>
-          <li><span class="icon">🔒</span><span><strong>Privacy First</strong> — No data stored or shared</span></li>
-          <li><span class="icon">🆓</span><span><strong>Completely Free</strong> — No subscription required</span></li>
-          <li><span class="icon">🌐</span><span><strong>Available 24/7</strong> — Access anytime, anywhere</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="section">
   <div class="container">
-    <div class="section-header fade-in">
-      <h2>Our Features</h2>
-      <p>Everything you need to track your academic performance</p>
-      <div class="divider"></div>
-    </div>
-    <div class="cards-grid">
-      <div class="card fade-in">
-        <div class="card-icon">📊</div>
-        <h3>Semester GPA</h3>
-        <p>Add unlimited subjects with credit hours and grades. Get instant GPA calculation with full breakdown.</p>
-      </div>
-      <div class="card fade-in">
-        <div class="card-icon">📈</div>
-        <h3>CGPA Tracker</h3>
-        <p>Enter multiple semesters and see your cumulative performance across your entire degree program.</p>
-      </div>
-      <div class="card fade-in">
-        <div class="card-icon">📋</div>
-        <h3>Grade Reference</h3>
-        <p>Complete grading scale with letter grades, points and percentages based on IU's official system.</p>
+    <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+      <h2 style="color: var(--primary); margin-bottom: 1rem;">What is Iqra GPA Calculator?</h2>
+      <p style="color: var(--text-light); line-height: 1.7; font-size: 0.95rem;">
+        The <strong>Iqra GPA Calculator</strong> is a premium academic utility designed specifically for students of Iqra University Islamabad. 
+        It solves the complexity of manual GPA calculations by providing an automated, error-free system that follows the 
+        <strong>Official IU Grading Policy</strong> for both batch systems (pre-2022 and 2022 onwards).
+      </p>
+      
+      <div class="about-feature-grid">
+        <div class="feature-card">
+          <span class="icon">⚖️</span>
+          <h3>Dual Systems</h3>
+          <p>Seamlessly switch between Old and New grading scales with one click.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📑</span>
+          <h3>Smart PDF</h3>
+          <p>Generate and download professional result sheets with detailed breakdowns.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">📱</span>
+          <h3>Modern UI</h3>
+          <p>A compact, mobile-responsive design that works perfectly on any device.</p>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🛡️</span>
+          <h3>100% Private</h3>
+          <p>Your data stays on your device. We never store your grades or IDs.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-alt" style="text-align:center;">
-  <div class="container fade-in">
-    <h2 style="font-family:'Poppins',sans-serif; font-size:1.8rem; font-weight:700; color:var(--navy); margin-bottom:0.75rem;">About Iqra University</h2>
-    <p style="color:var(--gray); max-width:600px; margin:0 auto 2rem; line-height:1.8;">Iqra University was established in 1998 and has grown to become one of Pakistan's premier private universities. The <strong>Islamabad campus</strong> is located in H-9, Islamabad, offering programs in Business, Engineering, Computer Science, Media Studies, and more.</p>
-    <a href="https://iqra.edu.pk" target="_blank" class="btn btn-primary">Visit Iqra University Website →</a>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Project Developer</h2>
+      <p>The vision behind the tool</p>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="dev-card">
+      <div class="dev-avatar">👨‍💻</div>
+      <div class="dev-info">
+        <h2>Tanzeel Hussain</h2>
+        <p>
+          I am a student at <strong>Iqra University Islamabad</strong> and a developer passionate about building useful technology. 
+          I created this tool to help my fellow students track their academic progress with ease and professional precision. 
+          This project represents my commitment to the IU community.
+        </p>
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+          <a href="https://github.com/Tanzeel0Hussain" target="_blank" class="btn btn-accent" style="padding: 0.5rem 1rem; font-size: 0.8rem;">GitHub Profile</a>
+          <a href="contact.html" class="btn btn-outline" style="border-color: white; color: white; padding: 0.5rem 1rem; font-size: 0.8rem;">Contact Me</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align: center; border-top: 1px solid #edf2f7;">
+  <div class="container">
+    <div style="margin-bottom: 1.5rem;">
+      <img src="iuic logo.jpg" alt="IUIC Islamabad" style="height: 80px; border-radius: 10px; box-shadow: var(--shadow-sm);"/>
+    </div>
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">Institutional Affiliation</h3>
+    <p style="color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; font-size: 0.9rem;">
+      This tool is specifically tailored for <strong>Iqra University Islamabad</strong>. 
+      For official university announcements, LMS, and portal access, please visit the official website.
+    </p>
+    <a href="https://iuisl.iqra.edu.pk/" target="_blank" class="btn btn-primary">Official IU Website →</a>
   </div>
 </section>
 
@@ -102,28 +149,28 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <img src="Iqra-University-Logo.png" alt="Iqra University"/>
-      <p>Free GPA & CGPA calculator for Iqra University students.</p>
+      <p>A premium GPA calculator built by students, for students of Iqra University.</p>
     </div>
     <div class="footer-col">
       <h4>Calculators</h4>
       <ul class="footer-links">
-        <li><a href="gpa-calculator.html">Semester GPA</a></li>
-        <li><a href="cgpa-calculator.html">CGPA Calculator</a></li>
-        <li><a href="grading.html">Grading Scale</a></li>
+        <li><a href="gpa-calculator.html">📊 Semester GPA</a></li>
+        <li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li>
+        <li><a href="grading.html">📋 Grading Scale</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul class="footer-links">
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="https://iqra.edu.pk" target="_blank">Iqra University</a></li>
+        <li><a href="about.html">ℹ️ About Project</a></li>
+        <li><a href="contact.html">📧 Contact Me</a></li>
+        <li><a href="https://iuisl.iqra.edu.pk/" target="_blank">🏛️ Iqra University</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Iqra GPA Calculator. All rights reserved.</span>
-    <span>Made with ❤️ for IU Students</span>
+    <span>© 2025 Iqra University Islamabad GPA Calculator. All rights reserved.</span>
+    <span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank">Tanzeel Hussain</a> for IUIC Students</span>
   </div>
 </footer>
 
