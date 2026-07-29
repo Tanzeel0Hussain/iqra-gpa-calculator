@@ -20,6 +20,16 @@ const gradingScales = {
     'D+': 1.33,
     'D': 1.00,
     'F': 0.00
+  },
+  graduate: {
+    'A': 4.00,
+    'A-': 3.67,
+    'B+': 3.33,
+    'B': 3.00,
+    'B-': 2.67,
+    'C+': 2.33,
+    'C': 2.00,
+    'F': 0.00
   }
 };
 
@@ -28,16 +38,26 @@ let currentScale = 'new';
 
 function switchStudentType(type) {
   currentScale = type;
-  document.getElementById('btnOld').classList.toggle('active-type', type === 'old');
-  document.getElementById('btnNew').classList.toggle('active-type', type === 'new');
+  const btnOld = document.getElementById('btnOld');
+  const btnNew = document.getElementById('btnNew');
+  const btnGrad = document.getElementById('btnGrad');
+
+  if (btnOld) btnOld.classList.toggle('active-type', type === 'old');
+  if (btnNew) btnNew.classList.toggle('active-type', type === 'new');
+  if (btnGrad) btnGrad.classList.toggle('active-type', type === 'graduate');
 
   const banner = document.getElementById('scaleBanner');
-  if (type === 'old') {
-    banner.innerHTML = '⚠️ <strong>Old Students System:</strong> 6 grade levels — Fail below 60%';
-    banner.style.color = '#92660a';
-  } else {
-    banner.innerHTML = '📌 <strong>New Students System:</strong> 11 grade levels — Fail below 50%';
-    banner.style.color = 'var(--primary)';
+  if (banner) {
+    if (type === 'old') {
+      banner.innerHTML = '⚠️ <strong>Old Undergraduate Scheme (Pre-Spring 2025):</strong> 6 grade levels — Fail below 60%';
+      banner.style.color = '#92660a';
+    } else if (type === 'graduate') {
+      banner.innerHTML = '📜 <strong>Graduate Scheme (MBA/MS/MPhil/PhD):</strong> 8 grade levels — Fail below 60% — Degree Requirement 2.50 CGPA';
+      banner.style.color = '#10b981';
+    } else {
+      banner.innerHTML = '📌 <strong>New Undergraduate Scheme (Spring 2025 Onwards):</strong> 11 grade levels — Fail below 50%';
+      banner.style.color = 'var(--primary)';
+    }
   }
 
   const rows = document.querySelectorAll('#subjectsBody tr');
