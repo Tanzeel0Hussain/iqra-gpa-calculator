@@ -59,8 +59,9 @@
 
       <!-- TAB BUTTONS -->
       <div class="tab-btns fade-in">
-        <button class="tab-btn active" id="oldTab" onclick="switchTab('old')">🎓 Old Students (Batch before 2022)</button>
-        <button class="tab-btn" id="newTab" onclick="switchTab('new')">🆕 New Students (Batch 2022 onwards)</button>
+        <button class="tab-btn active" id="oldTab" onclick="switchTab('old')">🎓 Old Undergraduate Scheme (Pre-Spring 2025)</button>
+        <button class="tab-btn" id="newTab" onclick="switchTab('new')">🆕 New Undergraduate Scheme (Spring 2025 Onwards)</button>
+        <button class="tab-btn" id="gradTab" onclick="switchTab('graduate')">📜 Graduate Programs (MBA / MS / PhD)</button>
       </div>
 
       <!-- OLD STUDENTS TAB -->
@@ -223,13 +224,95 @@
           </table>
         </div>
         <div class="card" style="margin-top:1rem; background:rgba(26,42,108,0.06); border:1px solid rgba(26,42,108,0.2);">
-          <h3 style="color:var(--navy); margin-bottom:0.5rem;">📌 New Students — Key Rules</h3>
+          <h3 style="color:var(--navy); margin-bottom:0.5rem;">📌 New Undergraduate Students — Key Rules</h3>
           <ul style="color:var(--gray); font-size:0.9rem; line-height:1.9; padding-left:1.2rem;">
             <li>Minimum passing marks: <strong>50%</strong></li>
             <li>Below 50% = <strong>F (Fail)</strong></li>
             <li>Full 11-grade scale (A down to D+)</li>
             <li>Minimum CGPA to graduate: <strong>2.00</strong></li>
-            <li>Dean's List: <strong>3.5+ GPA</strong> per semester</li>
+            <li>Probation Threshold Limit: <strong>1.70 Semester GPA</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- GRADUATE STUDENTS TAB -->
+      <div class="tab-panel" id="gradPanel">
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div style="padding:1rem 1.25rem; background:linear-gradient(135deg,#059669,#10b981); color:white; display:flex; align-items:center; gap:0.75rem;">
+            <span style="font-size:1.25rem;">📜</span>
+            <div>
+              <strong style="font-size:0.9rem;">Graduate Programs Grading System (MBA / MS / MPhil / PhD)</strong>
+              <div style="font-size:0.75rem; opacity:0.85; margin-top:0.1rem;">Fail below 60% — Effective Spring 2025</div>
+            </div>
+          </div>
+          <table class="grading-table" style="margin:0;">
+            <thead>
+              <tr>
+                <th>Percentage (%)</th>
+                <th>Letter Grade</th>
+                <th>Grade Points</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>90% – 100%</td>
+                <td><span class="grade-badge" style="background:#1a6c2a">A</span></td>
+                <td><strong>4.00</strong></td>
+                <td>⭐ Outstanding</td>
+              </tr>
+              <tr>
+                <td>85% – 89%</td>
+                <td><span class="grade-badge" style="background:#2a7c3a">A-</span></td>
+                <td><strong>3.67</strong></td>
+                <td>⭐ Excellent</td>
+              </tr>
+              <tr>
+                <td>80% – 84%</td>
+                <td><span class="grade-badge" style="background:#1a5c8c">B+</span></td>
+                <td><strong>3.33</strong></td>
+                <td>👍 Very Good</td>
+              </tr>
+              <tr>
+                <td>75% – 79%</td>
+                <td><span class="grade-badge" style="background:#1a6c9c">B</span></td>
+                <td><strong>3.00</strong></td>
+                <td>👍 Good</td>
+              </tr>
+              <tr>
+                <td>70% – 74%</td>
+                <td><span class="grade-badge" style="background:#2a7cac">B-</span></td>
+                <td><strong>2.67</strong></td>
+                <td>👍 Above Average</td>
+              </tr>
+              <tr>
+                <td>65% – 69%</td>
+                <td><span class="grade-badge" style="background:#7c5a1a">C+</span></td>
+                <td><strong>2.33</strong></td>
+                <td>✅ Average</td>
+              </tr>
+              <tr>
+                <td>60% – 64%</td>
+                <td><span class="grade-badge" style="background:#8c6a1a">C</span></td>
+                <td><strong>2.00</strong></td>
+                <td>✅ Satisfactory</td>
+              </tr>
+              <tr style="background:#fff5f5;">
+                <td>Below 60%</td>
+                <td><span class="grade-badge" style="background:#8c1a1a">F</span></td>
+                <td><strong>0.00</strong></td>
+                <td>❌ Fail (Course Repeat)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" style="margin-top:1rem; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3);">
+          <h3 style="color:#059669; margin-bottom:0.5rem;">🎓 Graduate Students (MBA/MS/MPhil/PhD) — Key Rules</h3>
+          <ul style="color:var(--gray); font-size:0.9rem; line-height:1.9; padding-left:1.2rem;">
+            <li>Minimum passing marks in a course: <strong>60%</strong> (Below 60% is <strong>F</strong>)</li>
+            <li>Minimum graduating CGPA: <strong>2.50 CGPA</strong></li>
+            <li>Probation Threshold Limit: <strong>2.00 Semester GPA</strong></li>
+            <li>Thesis/Project Assessment: <strong>PASS / FAIL</strong></li>
           </ul>
         </div>
       </div>
@@ -298,10 +381,21 @@
 <script src="js/main.js"></script>
 <script>
 function switchTab(tab) {
-  document.getElementById('oldPanel').classList.toggle('active', tab === 'old');
-  document.getElementById('newPanel').classList.toggle('active', tab === 'new');
-  document.getElementById('oldTab').classList.toggle('active', tab === 'old');
-  document.getElementById('newTab').classList.toggle('active', tab === 'new');
+  const oldPanel = document.getElementById('oldPanel');
+  const newPanel = document.getElementById('newPanel');
+  const gradPanel = document.getElementById('gradPanel');
+
+  const oldTab = document.getElementById('oldTab');
+  const newTab = document.getElementById('newTab');
+  const gradTab = document.getElementById('gradTab');
+
+  if (oldPanel) oldPanel.classList.toggle('active', tab === 'old');
+  if (newPanel) newPanel.classList.toggle('active', tab === 'new');
+  if (gradPanel) gradPanel.classList.toggle('active', tab === 'graduate');
+
+  if (oldTab) oldTab.classList.toggle('active', tab === 'old');
+  if (newTab) newTab.classList.toggle('active', tab === 'new');
+  if (gradTab) gradTab.classList.toggle('active', tab === 'graduate');
 }
 </script>
 </body>
