@@ -12,144 +12,38 @@
 <body>
 <nav class="navbar">
   <div class="nav-container">
-    <a href="index.html" class="nav-logo">
-      <img src="Iqra-University-Logo.png" alt="Iqra University logo"/>
-      <div class="nav-logo-text"><div class="title">IUIC GPA Calculator</div><div class="sub">Iqra University Islamabad</div></div>
-    </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="gpa-calculator.html">📊 GPA Calculator</a></li>
-      <li><a href="cgpa-calculator.html" class="active">📈 CGPA Calculator</a></li>
-      <li><a href="grading.html">📋 Grading Scale</a></li>
-      <li><a href="about.html">ℹ️ About</a></li>
-      <li><a href="contact.html">📧 Contact</a></li>
-    </ul>
+    <a href="index.html" class="nav-logo"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><div class="nav-logo-text"><div class="title">IUIC GPA Calculator</div><div class="sub">Iqra University Islamabad</div></div></a>
+    <ul class="nav-links" id="navLinks"><li><a href="index.html">Home</a></li><li><a href="gpa-calculator.html">GPA Calculator</a></li><li><a href="cgpa-calculator.html" class="active">CGPA Calculator</a></li><li><a href="grading.html">Grading Scale</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
     <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
   </div>
 </nav>
 
-<div class="hero" style="padding:4rem 1.5rem;">
-  <div class="hero-content">
-    <div class="hero-badge">📈 Cumulative Planning Tool</div>
-    <h1>Calculate & Plan Your <span>CGPA</span></h1>
-    <p>Combine semester GPAs using credit-hour weighting, then see the GPA you need for your next target.</p>
+<div class="hero" style="padding:4rem 1.5rem;"><div class="hero-content"><div class="hero-badge">Cumulative Planning Tool</div><h1>Calculate & Plan Your <span>CGPA</span></h1><p>Combine semester GPAs using credit-hour weighting, then see the GPA you need for your next target.</p></div></div>
+
+<section class="section" style="padding-top:0; margin-top:-3rem;"><div class="calc-wrapper"><div class="calc-card">
+  <div class="calc-header"><div><h2>Cumulative GPA Calculator</h2><p>Enter semester GPAs directly or calculate a semester from its subjects.</p></div></div>
+  <div class="calc-body">
+    <div class="type-toggle" role="group" aria-label="Student grading scheme"><button type="button" class="type-btn" id="btnOld" onclick="switchStudentType('old')">Legacy (through Fall 2024)</button><button type="button" class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">Revised UG (Spring 2025+)</button><button type="button" class="type-btn" id="btnGrad" onclick="switchStudentType('graduate')">Revised Graduate</button></div>
+    <div class="hero-badge" id="scaleBanner" style="width:100%; justify-content:center; margin-bottom:.5rem; background:var(--bg); border:1px solid var(--primary-light); text-transform:none;">Revised Undergraduate Scheme (Spring 2025 onwards for newly admitted students): 11 grade levels — F below 50%</div>
+    <div class="status-row"><span>CGPA is weighted by each semester's credit hours.</span><span class="save-status" id="cgpaSaveStatus">Saved on this device</span></div>
+    <div id="cgpaMessage" class="form-message" aria-live="polite"></div>
+    <div id="semestersList"></div>
+    <div class="calc-actions" style="margin-top:1.4rem;"><button type="button" class="btn btn-primary" onclick="addSemester()">Add Semester</button><button type="button" class="btn btn-accent" onclick="calculateCGPA()">Calculate CGPA</button><button type="button" class="btn btn-outline" style="border-width:1px;" onclick="resetCGPA()">Reset</button></div>
+
+    <div class="result-box" id="cgpaResultBox" aria-live="polite"><div class="result-gpa" id="cgpaResult">0.00</div><div class="result-label">Cumulative GPA (CGPA)</div><div class="result-grade" id="cgpaGrade" style="font-size:1.15rem; font-weight:700; color:var(--primary); margin-bottom:1.5rem;"></div><div class="result-stats"><div class="result-stat"><span>Semesters Used</span><strong id="cgpaTotalSem">0</strong></div><div class="result-stat"><span>Total Credits</span><strong id="cgpaTotalCredits">0</strong></div><div class="result-stat"><span>Quality Points</span><strong id="cgpaTotalPoints">0</strong></div></div><div class="result-actions"><button type="button" class="btn btn-primary" onclick="openDownloadModal('cgpa')">Download PDF</button><button type="button" class="btn btn-outline" onclick="printResult()">Print Result</button></div></div>
+
+    <div class="target-card" id="targetPlanner"><h3>Target CGPA Planner</h3><p>Estimate the average GPA required over your next planned credits to reach a desired CGPA.</p><div class="target-grid"><div class="input-group"><label for="targetCurrentCGPA">Current CGPA</label><input class="table-input" id="targetCurrentCGPA" type="number" min="0" max="4" step="0.01" placeholder="3.20" oninput="saveCGPAState()"></div><div class="input-group"><label for="targetCompletedCredits">Completed Credits</label><input class="table-input" id="targetCompletedCredits" type="number" min="1" step="1" placeholder="90" oninput="saveCGPAState()"></div><div class="input-group"><label for="targetDesiredCGPA">Desired CGPA</label><input class="table-input" id="targetDesiredCGPA" type="number" min="0" max="4" step="0.01" placeholder="3.40" oninput="saveCGPAState()"></div><div class="input-group"><label for="targetPlannedCredits">Next Credits</label><input class="table-input" id="targetPlannedCredits" type="number" min="1" step="1" placeholder="18" oninput="saveCGPAState()"></div></div><div class="calc-actions" style="margin:1rem 0 0;"><button type="button" class="btn btn-primary" onclick="calculateTargetCGPA()">Calculate Required GPA</button><button type="button" class="btn btn-outline" onclick="fillTargetFromCGPA()">Use CGPA Result</button></div><div id="targetResult" class="target-result" aria-live="polite"></div></div>
+
+    <div class="source-note"><strong>Grading source:</strong> Iqra University student handbooks. The target planner is a mathematical estimate and does not account for course repeats, exclusions, transfer-credit rules, or other registrar adjustments. <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-UG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Undergraduate handbook</a> · <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-PG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Graduate handbook</a></div>
   </div>
-</div>
+</div></div></section>
 
-<section class="section" style="padding-top:0; margin-top:-3rem;">
-  <div class="calc-wrapper">
-    <div class="calc-card">
-      <div class="calc-header">
-        <div class="calc-header-icon">📈</div>
-        <div><h2>Cumulative GPA Calculator</h2><p>Enter semester GPAs directly or calculate a semester from its subjects.</p></div>
-      </div>
-      <div class="calc-body">
-        <div class="type-toggle" role="group" aria-label="Student grading scheme">
-          <button type="button" class="type-btn" id="btnOld" onclick="switchStudentType('old')">🎓 Legacy (through Fall 2024)</button>
-          <button type="button" class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">🆕 Revised UG (Spring 2025+)</button>
-          <button type="button" class="type-btn" id="btnGrad" onclick="switchStudentType('graduate')">📜 Revised Graduate</button>
-        </div>
+<div class="modal-overlay" id="semesterModal" role="dialog" aria-modal="true" aria-labelledby="modalSemTitle"><div class="modal-container" style="max-width:800px;"><div class="modal-header"><h3 class="modal-title" id="modalSemTitle">Calculate Semester Subjects</h3><button class="modal-close" onclick="closeModal('semesterModal')" aria-label="Close">×</button></div><div class="modal-body"><div style="overflow-x:auto;"><table class="subjects-table" id="modalTable"><thead><tr><th style="width:45%">Subject</th><th style="width:25%">Credits</th><th style="width:25%">Grade</th><th style="width:5%"></th></tr></thead><tbody id="modalBody"></tbody></table></div><button type="button" class="btn btn-outline" style="width:100%; border-style:dashed; margin-top:1rem;" onclick="addModalSubject()">Add Subject</button></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('semesterModal')">Cancel</button><button class="btn btn-primary" onclick="applyModalGPA()">Apply to Semester</button></div></div></div>
 
-        <div class="hero-badge" id="scaleBanner" style="width:100%; justify-content:center; margin-bottom:.5rem; background:var(--bg); border:1px solid var(--primary-light); text-transform:none;">
-          📌 Revised Undergraduate Scheme (Spring 2025 onwards for newly admitted students): 11 grade levels — F below 50%
-        </div>
-        <div class="status-row">
-          <span>CGPA is weighted by each semester's credit hours.</span>
-          <span class="save-status" id="cgpaSaveStatus">✓ Saved on this device</span>
-        </div>
-        <div id="cgpaMessage" class="form-message" aria-live="polite"></div>
+<div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadTitle"><div class="modal-container"><div class="modal-header"><h3 class="modal-title" id="downloadTitle">Generate Student Report</h3><button class="modal-close" onclick="closeModal('downloadModal')" aria-label="Close">×</button></div><div class="modal-body"><p style="color:var(--text-light); margin-bottom:1.5rem;">Add your details to the PDF. The file is an unofficial planning report, not a university transcript.</p><div class="form-group" style="margin-bottom:1.5rem;"><label for="studentName" style="display:block; font-weight:600; margin-bottom:.5rem;">Full Name</label><input type="text" id="studentName" class="table-input" placeholder="Enter your full name" maxlength="80"></div><div class="form-group"><label for="studentID" style="display:block; font-weight:600; margin-bottom:.5rem;">Student ID / Registration No.</label><input type="text" id="studentID" class="table-input" placeholder="e.g. 12345" maxlength="40"></div><div id="downloadError" style="display:none; color:var(--danger); font-size:.75rem; margin-top:.5rem; font-weight:700;"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('downloadModal')">Cancel</button><button class="btn btn-primary" onclick="generatePDF()">Download PDF</button></div></div></div>
 
-        <div id="semestersList"></div>
+<footer><div class="footer-grid"><div class="footer-brand"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><p>A student-built GPA and CGPA planning tool for Iqra University students.</p></div><div class="footer-col"><h4>Calculators</h4><ul class="footer-links"><li><a href="gpa-calculator.html">Semester GPA</a></li><li><a href="cgpa-calculator.html">CGPA Calculator</a></li><li><a href="grading.html">Grading Scale</a></li></ul></div><div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="about.html">About Project</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://iuisl.iqra.edu.pk/" target="_blank" rel="noopener">Iqra University Islamabad</a></li></ul></div></div><div class="footer-bottom"><span>© 2026 IUIC GPA Calculator.</span><span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank" rel="noopener">Tanzeel Hussain</a></span></div></footer>
 
-        <div class="calc-actions" style="margin-top:1.4rem;">
-          <button type="button" class="btn btn-primary" onclick="addSemester()">➕ Add Semester</button>
-          <button type="button" class="btn btn-accent" onclick="calculateCGPA()">🔢 Calculate CGPA</button>
-          <button type="button" class="btn btn-outline" style="border-width:1px;" onclick="resetCGPA()">🔄 Reset</button>
-        </div>
-
-        <div class="result-box" id="cgpaResultBox" aria-live="polite">
-          <div class="result-gpa" id="cgpaResult">0.00</div>
-          <div class="result-label">Cumulative GPA (CGPA)</div>
-          <div class="result-grade" id="cgpaGrade" style="font-size:1.15rem; font-weight:700; color:var(--primary); margin-bottom:1.5rem;"></div>
-          <div class="result-stats">
-            <div class="result-stat"><span>Semesters Used</span><strong id="cgpaTotalSem">0</strong></div>
-            <div class="result-stat"><span>Total Credits</span><strong id="cgpaTotalCredits">0</strong></div>
-            <div class="result-stat"><span>Quality Points</span><strong id="cgpaTotalPoints">0</strong></div>
-          </div>
-          <div class="result-actions">
-            <button type="button" class="btn btn-primary" onclick="openDownloadModal('cgpa')">📥 Download PDF</button>
-            <button type="button" class="btn btn-outline" onclick="printResult()">🖨️ Print Result</button>
-          </div>
-        </div>
-
-        <div class="target-card" id="targetPlanner">
-          <h3>🎯 Target CGPA Planner</h3>
-          <p>Estimate the average GPA required over your next planned credits to reach a desired CGPA.</p>
-          <div class="target-grid">
-            <div class="input-group"><label for="targetCurrentCGPA">Current CGPA</label><input class="table-input" id="targetCurrentCGPA" type="number" min="0" max="4" step="0.01" placeholder="3.20" oninput="saveCGPAState()"></div>
-            <div class="input-group"><label for="targetCompletedCredits">Completed Credits</label><input class="table-input" id="targetCompletedCredits" type="number" min="1" step="1" placeholder="90" oninput="saveCGPAState()"></div>
-            <div class="input-group"><label for="targetDesiredCGPA">Desired CGPA</label><input class="table-input" id="targetDesiredCGPA" type="number" min="0" max="4" step="0.01" placeholder="3.40" oninput="saveCGPAState()"></div>
-            <div class="input-group"><label for="targetPlannedCredits">Next Credits</label><input class="table-input" id="targetPlannedCredits" type="number" min="1" step="1" placeholder="18" oninput="saveCGPAState()"></div>
-          </div>
-          <div class="calc-actions" style="margin:1rem 0 0;">
-            <button type="button" class="btn btn-primary" onclick="calculateTargetCGPA()">🎯 Calculate Required GPA</button>
-            <button type="button" class="btn btn-outline" onclick="fillTargetFromCGPA()">↙ Use CGPA Result</button>
-          </div>
-          <div id="targetResult" class="target-result" aria-live="polite"></div>
-        </div>
-
-        <div class="source-note">
-          <strong>Grading source:</strong> Iqra University student handbooks. The target planner is a mathematical estimate and does not account for course repeats, exclusions, transfer-credit rules, or other registrar adjustments.
-          <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-UG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Undergraduate handbook</a> ·
-          <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-PG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Graduate handbook</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="modal-overlay" id="semesterModal" role="dialog" aria-modal="true" aria-labelledby="modalSemTitle">
-  <div class="modal-container" style="max-width:800px;">
-    <div class="modal-header"><h3 class="modal-title" id="modalSemTitle">📘 Calculate Semester Subjects</h3><button class="modal-close" onclick="closeModal('semesterModal')" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <div style="overflow-x:auto;">
-        <table class="subjects-table" id="modalTable">
-          <thead><tr><th style="width:45%">Subject</th><th style="width:25%">Credits</th><th style="width:25%">Grade</th><th style="width:5%"></th></tr></thead>
-          <tbody id="modalBody"></tbody>
-        </table>
-      </div>
-      <button type="button" class="btn btn-outline" style="width:100%; border-style:dashed; margin-top:1rem;" onclick="addModalSubject()">➕ Add Subject</button>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('semesterModal')">Cancel</button><button class="btn btn-primary" onclick="applyModalGPA()">Apply to Semester</button></div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadTitle">
-  <div class="modal-container">
-    <div class="modal-header"><h3 class="modal-title" id="downloadTitle">📄 Generate Student Report</h3><button class="modal-close" onclick="closeModal('downloadModal')" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <p style="color:var(--text-light); margin-bottom:1.5rem;">Add your details to the PDF. The file is an unofficial planning report, not a university transcript.</p>
-      <div class="form-group" style="margin-bottom:1.5rem;"><label for="studentName" style="display:block; font-weight:600; margin-bottom:.5rem;">Full Name</label><input type="text" id="studentName" class="table-input" placeholder="Enter your full name" maxlength="80"></div>
-      <div class="form-group"><label for="studentID" style="display:block; font-weight:600; margin-bottom:.5rem;">Student ID / Registration No.</label><input type="text" id="studentID" class="table-input" placeholder="e.g. 12345" maxlength="40"></div>
-      <div id="downloadError" style="display:none; color:var(--danger); font-size:.75rem; margin-top:.5rem; font-weight:700;"></div>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('downloadModal')">Cancel</button><button class="btn btn-primary" onclick="generatePDF()">Download PDF</button></div>
-  </div>
-</div>
-
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><p>A student-built GPA and CGPA planning tool for Iqra University students.</p></div>
-    <div class="footer-col"><h4>Calculators</h4><ul class="footer-links"><li><a href="gpa-calculator.html">📊 Semester GPA</a></li><li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li><li><a href="grading.html">📋 Grading Scale</a></li></ul></div>
-    <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="about.html">ℹ️ About Project</a></li><li><a href="contact.html">📧 Contact</a></li><li><a href="https://iuisl.iqra.edu.pk/" target="_blank" rel="noopener">🏛️ Iqra University Islamabad</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><span>© 2026 IUIC GPA Calculator.</span><span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank" rel="noopener">Tanzeel Hussain</a></span></div>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/cgpa.js"></script>
-<script src="js/report.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script><script src="js/main.js"></script><script src="js/cgpa.js"></script><script src="js/report.js"></script>
 </body>
 </html>
