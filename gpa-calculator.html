@@ -12,118 +12,54 @@
 <body>
 <nav class="navbar">
   <div class="nav-container">
-    <a href="index.html" class="nav-logo">
-      <img src="Iqra-University-Logo.png" alt="Iqra University logo"/>
-      <div class="nav-logo-text"><div class="title">IUIC GPA Calculator</div><div class="sub">Iqra University Islamabad</div></div>
-    </a>
+    <a href="index.html" class="nav-logo"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><div class="nav-logo-text"><div class="title">IUIC GPA Calculator</div><div class="sub">Iqra University Islamabad</div></div></a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="gpa-calculator.html" class="active">📊 GPA Calculator</a></li>
-      <li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li>
-      <li><a href="grading.html">📋 Grading Scale</a></li>
-      <li><a href="about.html">ℹ️ About</a></li>
-      <li><a href="contact.html">📧 Contact</a></li>
+      <li><a href="index.html">Home</a></li><li><a href="gpa-calculator.html" class="active">GPA Calculator</a></li><li><a href="cgpa-calculator.html">CGPA Calculator</a></li><li><a href="grading.html">Grading Scale</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
   </div>
 </nav>
 
 <div class="hero" style="padding:4rem 1.5rem;">
-  <div class="hero-content">
-    <div class="hero-badge">🎓 Semester Planning Tool</div>
-    <h1>Calculate Your <span>GPA</span></h1>
-    <p>Choose the grading scheme that applies to you, add your courses, and get a credit-weighted semester GPA.</p>
-  </div>
+  <div class="hero-content"><div class="hero-badge">Semester Planning Tool</div><h1>Calculate Your <span>GPA</span></h1><p>Choose the grading scheme that applies to you, add your courses, and get a credit-weighted semester GPA.</p></div>
 </div>
 
 <section class="section" style="padding-top:0; margin-top:-3rem;">
-  <div class="calc-wrapper">
-    <div class="calc-card">
-      <div class="calc-header">
-        <div class="calc-header-icon">📊</div>
-        <div><h2>Semester GPA Calculator</h2><p>Your draft is saved locally in this browser.</p></div>
+  <div class="calc-wrapper"><div class="calc-card">
+    <div class="calc-header"><div><h2>Semester GPA Calculator</h2><p>Your draft is saved locally in this browser.</p></div></div>
+    <div class="calc-body">
+      <div class="type-toggle" role="group" aria-label="Student grading scheme">
+        <button type="button" class="type-btn" id="btnOld" onclick="switchStudentType('old')">Legacy (through Fall 2024)</button>
+        <button type="button" class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">Revised UG (Spring 2025+)</button>
+        <button type="button" class="type-btn" id="btnGrad" onclick="switchStudentType('graduate')">Revised Graduate</button>
       </div>
-      <div class="calc-body">
-        <div class="type-toggle" role="group" aria-label="Student grading scheme">
-          <button type="button" class="type-btn" id="btnOld" onclick="switchStudentType('old')">🎓 Legacy (through Fall 2024)</button>
-          <button type="button" class="type-btn active-type" id="btnNew" onclick="switchStudentType('new')">🆕 Revised UG (Spring 2025+)</button>
-          <button type="button" class="type-btn" id="btnGrad" onclick="switchStudentType('graduate')">📜 Revised Graduate</button>
-        </div>
-
-        <div class="hero-badge" id="scaleBanner" style="width:100%; justify-content:center; margin-bottom:.5rem; background:var(--bg); border:1px solid var(--primary-light); text-transform:none;">
-          📌 Revised Undergraduate Scheme (Spring 2025 onwards for newly admitted students): 11 grade levels — F below 50%
-        </div>
-        <div class="status-row">
-          <span>Quality Points = Grade Point × Credit Hours</span>
-          <span class="save-status" id="saveStatus">✓ Saved on this device</span>
-        </div>
-
-        <div id="calculatorMessage" class="form-message" aria-live="polite"></div>
-
-        <div style="overflow-x:auto;">
-          <table class="subjects-table" id="subjectsTable">
-            <thead><tr><th style="width:40%">Subject Name</th><th style="width:20%">Credit Hours</th><th style="width:20%">Grade</th><th style="width:15%">Quality Points</th><th style="width:5%"></th></tr></thead>
-            <tbody id="subjectsBody"></tbody>
-          </table>
-        </div>
-
-        <div class="calc-actions">
-          <button type="button" class="btn btn-primary" onclick="addSubject()">➕ Add Subject</button>
-          <button type="button" class="btn btn-accent" onclick="calculateGPA()">🔢 Calculate GPA</button>
-          <button type="button" class="btn btn-outline" style="border-width:1px;" onclick="resetCalculator()">🔄 Reset</button>
-        </div>
-
-        <div class="result-box" id="resultBox" aria-live="polite">
-          <div class="result-gpa" id="resultGPA">0.00</div>
-          <div class="result-label">Semester GPA</div>
-          <div class="result-grade" id="resultGrade" style="font-size:1.15rem; font-weight:700; color:var(--primary); margin-bottom:1.5rem;"></div>
-          <div class="result-stats">
-            <div class="result-stat"><span>Total Credits</span><strong id="totalCredits">0</strong></div>
-            <div class="result-stat"><span>Subjects</span><strong id="totalSubjects">0</strong></div>
-            <div class="result-stat"><span>Quality Points</span><strong id="totalPoints">0</strong></div>
-          </div>
-          <div class="result-actions">
-            <button type="button" class="btn btn-primary" onclick="openDownloadModal('gpa')">📥 Download PDF</button>
-            <button type="button" class="btn btn-outline" onclick="printResult()">🖨️ Print Result</button>
-          </div>
-        </div>
-
-        <div class="source-note">
-          <strong>Grading source:</strong> Iqra University student handbooks. The legacy scale applies through Fall 2024; the revised scheme applies from Spring 2025 to newly admitted students. This calculator is an unofficial planning tool—always verify your official result in the university system.
-          <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-UG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Undergraduate handbook</a> ·
-          <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-PG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Graduate handbook</a>
-        </div>
+      <div class="hero-badge" id="scaleBanner" style="width:100%; justify-content:center; margin-bottom:.5rem; background:var(--bg); border:1px solid var(--primary-light); text-transform:none;">Revised Undergraduate Scheme (Spring 2025 onwards for newly admitted students): 11 grade levels — F below 50%</div>
+      <div class="status-row"><span>Quality Points = Grade Point × Credit Hours</span><span class="save-status" id="saveStatus">Saved on this device</span></div>
+      <div id="calculatorMessage" class="form-message" aria-live="polite"></div>
+      <div style="overflow-x:auto;"><table class="subjects-table" id="subjectsTable"><thead><tr><th style="width:40%">Subject Name</th><th style="width:20%">Credit Hours</th><th style="width:20%">Grade</th><th style="width:15%">Quality Points</th><th style="width:5%"></th></tr></thead><tbody id="subjectsBody"></tbody></table></div>
+      <div class="calc-actions">
+        <button type="button" class="btn btn-primary" onclick="addSubject()">Add Subject</button>
+        <button type="button" class="btn btn-accent" onclick="calculateGPA()">Calculate GPA</button>
+        <button type="button" class="btn btn-outline" style="border-width:1px;" onclick="resetCalculator()">Reset</button>
       </div>
+      <div class="result-box" id="resultBox" aria-live="polite">
+        <div class="result-gpa" id="resultGPA">0.00</div><div class="result-label">Semester GPA</div><div class="result-grade" id="resultGrade" style="font-size:1.15rem; font-weight:700; color:var(--primary); margin-bottom:1.5rem;"></div>
+        <div class="result-stats"><div class="result-stat"><span>Total Credits</span><strong id="totalCredits">0</strong></div><div class="result-stat"><span>Subjects</span><strong id="totalSubjects">0</strong></div><div class="result-stat"><span>Quality Points</span><strong id="totalPoints">0</strong></div></div>
+        <div class="result-actions"><button type="button" class="btn btn-primary" onclick="openDownloadModal('gpa')">Download PDF</button><button type="button" class="btn btn-outline" onclick="printResult()">Print Result</button></div>
+      </div>
+      <div class="source-note"><strong>Grading source:</strong> Iqra University student handbooks. The legacy scale applies through Fall 2024; the revised scheme applies from Spring 2025 to newly admitted students. This calculator is an unofficial planning tool—always verify your official result in the university system. <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-UG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Undergraduate handbook</a> · <a href="https://iqra.edu.pk/wp-content/uploads/2026/04/IU-PG-Handbook-11.06.2025-v14.0-2.pdf" target="_blank" rel="noopener">Graduate handbook</a></div>
     </div>
-  </div>
+  </div></div>
 </section>
 
-<div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadTitle">
-  <div class="modal-container">
-    <div class="modal-header"><h3 class="modal-title" id="downloadTitle">📄 Generate Student Report</h3><button class="modal-close" onclick="closeModal('downloadModal')" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <p style="color:var(--text-light); margin-bottom:1.5rem;">Add your details to the PDF. The generated file is an unofficial planning report, not a university transcript.</p>
-      <div class="form-group" style="margin-bottom:1.5rem;"><label for="studentName" style="display:block; font-weight:600; margin-bottom:.5rem;">Full Name</label><input type="text" id="studentName" class="table-input" placeholder="Enter your full name" maxlength="80"></div>
-      <div class="form-group"><label for="studentID" style="display:block; font-weight:600; margin-bottom:.5rem;">Student ID / Registration No.</label><input type="text" id="studentID" class="table-input" placeholder="e.g. 12345" maxlength="40"></div>
-      <div id="downloadError" style="display:none; color:var(--danger); font-size:.75rem; margin-top:.5rem; font-weight:700;"></div>
-    </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('downloadModal')">Cancel</button><button class="btn btn-primary" onclick="generatePDF()">Download PDF</button></div>
-  </div>
-</div>
+<div class="modal-overlay" id="downloadModal" role="dialog" aria-modal="true" aria-labelledby="downloadTitle"><div class="modal-container">
+  <div class="modal-header"><h3 class="modal-title" id="downloadTitle">Generate Student Report</h3><button class="modal-close" onclick="closeModal('downloadModal')" aria-label="Close">×</button></div>
+  <div class="modal-body"><p style="color:var(--text-light); margin-bottom:1.5rem;">Add your details to the PDF. The generated file is an unofficial planning report, not a university transcript.</p><div class="form-group" style="margin-bottom:1.5rem;"><label for="studentName" style="display:block; font-weight:600; margin-bottom:.5rem;">Full Name</label><input type="text" id="studentName" class="table-input" placeholder="Enter your full name" maxlength="80"></div><div class="form-group"><label for="studentID" style="display:block; font-weight:600; margin-bottom:.5rem;">Student ID / Registration No.</label><input type="text" id="studentID" class="table-input" placeholder="e.g. 12345" maxlength="40"></div><div id="downloadError" style="display:none; color:var(--danger); font-size:.75rem; margin-top:.5rem; font-weight:700;"></div></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('downloadModal')">Cancel</button><button class="btn btn-primary" onclick="generatePDF()">Download PDF</button></div>
+</div></div>
 
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><p>A student-built GPA and CGPA planning tool for Iqra University students.</p></div>
-    <div class="footer-col"><h4>Calculators</h4><ul class="footer-links"><li><a href="gpa-calculator.html">📊 Semester GPA</a></li><li><a href="cgpa-calculator.html">📈 CGPA Calculator</a></li><li><a href="grading.html">📋 Grading Scale</a></li></ul></div>
-    <div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="about.html">ℹ️ About Project</a></li><li><a href="contact.html">📧 Contact</a></li><li><a href="https://iuisl.iqra.edu.pk/" target="_blank" rel="noopener">🏛️ Iqra University Islamabad</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><span>© 2026 IUIC GPA Calculator.</span><span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank" rel="noopener">Tanzeel Hussain</a></span></div>
-</footer>
+<footer><div class="footer-grid"><div class="footer-brand"><img src="Iqra-University-Logo.png" alt="Iqra University logo"/><p>A student-built GPA and CGPA planning tool for Iqra University students.</p></div><div class="footer-col"><h4>Calculators</h4><ul class="footer-links"><li><a href="gpa-calculator.html">Semester GPA</a></li><li><a href="cgpa-calculator.html">CGPA Calculator</a></li><li><a href="grading.html">Grading Scale</a></li></ul></div><div class="footer-col"><h4>Quick Links</h4><ul class="footer-links"><li><a href="about.html">About Project</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://iuisl.iqra.edu.pk/" target="_blank" rel="noopener">Iqra University Islamabad</a></li></ul></div></div><div class="footer-bottom"><span>© 2026 IUIC GPA Calculator.</span><span>Developed by <a href="https://github.com/Tanzeel0Hussain" target="_blank" rel="noopener">Tanzeel Hussain</a></span></div></footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-<script src="js/main.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/report.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script><script src="js/main.js"></script><script src="js/calculator.js"></script><script src="js/report.js"></script>
 </body>
 </html>
