@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IUIC Calculator Tests</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:820px;margin:40px auto;padding:0 20px;color:#172554;background:#f8fafc}
+    h1{margin-bottom:6px}.muted{color:#64748b}.test{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;margin:10px 0}.pass{border-left:5px solid #10b981}.fail{border-left:5px solid #ef4444}code{background:#eef2ff;padding:2px 5px;border-radius:4px}
+  </style>
+</head>
+<body>
+  <h1>IUIC Calculator Regression Tests</h1>
+  <p class="muted">Small dependency-free checks for the core GPA/CGPA mathematics used by the live calculator.</p>
+  <div id="results"></div>
+  <script>
+    const scales = {
+      old: { A:4, 'B+':3.5, B:3, 'C+':2.5, C:2, F:0 },
+      revisedUG: { A:4, 'A-':3.67, 'B+':3.33, B:3, 'B-':2.67, 'C+':2.33, C:2, 'C-':1.67, 'D+':1.33, D:1, F:0 },
+      graduate: { A:4, 'A-':3.67, 'B+':3.33, B:3, 'B-':2.67, 'C+':2.33, C:2, F:0 }
+    };
+
+    const weighted = rows => rows.reduce((s,r)=>s+r.points*r.credits,0) / rows.reduce((s,r)=>s+r.credits,0);
+    const target = (current, completed, desired, planned) => (desired*(completed+planned)-current*completed)/planned;
+    const close = (a,b,t=0.005) => Math.abs(a-b) <= t;
+
+    const cases = [
+      ['Legacy B+ is 3.50', () => scales.old['B+'] === 3.5, '3.50'],
+      ['Revised UG A- is 3.67', () => scales.revisedUG['A-'] === 3.67, '3.67'],
+      ['Revised UG D is 1.00', () => scales.revisedUG.D === 1, '1.00'],
+      ['Graduate scale does not include D', () => scales.graduate.D === undefined, 'undefined'],
+      ['Weighted GPA: A(3cr) + B(3cr) = 3.50', () => close(weighted([{points:4,credits:3},{points:3,credits:3}]),3.5), '3.50'],
+      ['Weighted GPA respects different credits', () => close(weighted([{points:4,credits:4},{points:2,credits:2}]),20/6), (20/6).toFixed(2)],
+      ['CGPA weighting uses semester credits', () => close(weighted([{points:3.5,credits:18},{points:3,credits:12}]),99/30), (99/30).toFixed(2)],
+      ['Target CGPA formula', () => close(target(3.20,90,3.40,18),4.40), '4.40 (not reachable in one 18-credit term)']
+    ];
+
+    const root = document.getElementById('results');
+    let passed = 0;
+    cases.forEach(([name, fn, expected]) => {
+      let ok = false;
+      try { ok = Boolean(fn()); } catch (e) { ok = false; }
+      if (ok) passed++;
+      const div = document.createElement('div');
+      div.className = `test ${ok ? 'pass' : 'fail'}`;
+      div.innerHTML = `<strong>${ok ? 'PASS' : 'FAIL'}:</strong> ${name}<br><span class="muted">Expected: <code>${expected}</code></span>`;
+      root.appendChild(div);
+    });
+
+    const summary = document.createElement('p');
+    summary.innerHTML = `<strong>${passed}/${cases.length} tests passed.</strong>`;
+    root.prepend(summary);
+  </script>
+</body>
+</html>
