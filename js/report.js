@@ -1,116 +1,160 @@
-// ===== PDF GENERATION LOGIC =====
+// ===== PDF / PRINT REPORTS =====
 let currentReportType = 'gpa';
 
 function openDownloadModal(type) {
-    currentReportType = type;
-    document.getElementById('downloadModal').classList.add('open');
+  currentReportType = type;
+  const modal = document.getElementById('downloadModal');
+  if (modal) modal.classList.add('open');
+}
+
+function printResult() {
+  window.print();
+}
+
+function imageToDataURL(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth || image.width;
+        canvas.height = image.naturalHeight || image.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0);
+        resolve(canvas.toDataURL('image/png'));
+      } catch (error) {
+        reject(error);
+      }
+    };
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+function validGPARowsForReport() {
+  return Array.from(document.querySelectorAll('#subjectsBody tr')).flatMap(row => {
+    const id = row.id.replace('row-', '');
+    const name = document.getElementById(`name-${id}`)?.value.trim() || 'Subject';
+    const credits = document.getElementById(`credits-${id}`)?.value || '';
+    const gradeEl = document.getElementById(`grade-${id}`);
+    const grade = gradeEl?.value || '';
+    const points = document.getElementById(`points-${id}`)?.textContent || '';
+    return grade ? [[name, credits, grade, points]] : [];
+  });
+}
+
+function validCGPARowsForReport() {
+  return Array.from(document.querySelectorAll('.semester-row')).flatMap(row => {
+    const id = row.id.split('-')[1];
+    const label = row.querySelector('.sem-title-text')?.textContent || `Semester ${id}`;
+    const gpa = document.getElementById(`sgpa-${id}`)?.value || '';
+    const credits = document.getElementById(`sch-${id}`)?.value || '';
+    const gpaNum = Number.parseFloat(gpa);
+    const creditsNum = Number.parseFloat(credits);
+    if (!Number.isFinite(gpaNum) || !Number.isFinite(creditsNum) || creditsNum <= 0) return [];
+    return [[label, gpaNum.toFixed(2), creditsNum.toString(), (gpaNum * creditsNum).toFixed(2)]];
+  });
 }
 
 async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    
-    const name = document.getElementById('studentName').value.trim();
-    const id = document.getElementById('studentID').value.trim();
-    const errorEl = document.getElementById('downloadError');
+  const name = document.getElementById('studentName')?.value.trim() || '';
+  const studentId = document.getElementById('studentID')?.value.trim() || '';
+  const errorEl = document.getElementById('downloadError');
 
-    if (!name || !id) {
-        if (errorEl) errorEl.style.display = 'block';
-        return;
+  if (!name || !studentId) {
+    if (errorEl) {
+      errorEl.textContent = '⚠️ Please enter both your name and student ID.';
+      errorEl.style.display = 'block';
     }
-    if (errorEl) errorEl.style.display = 'none';
-    
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    
-    // 1. Add Logo (Top)
-    // We use the image URL directly. jsPDF supports this if the image is local/same-origin.
-    try {
-        doc.addImage('Iqra-University-Logo.png', 'PNG', pageWidth/2 - 15, 10, 30, 30);
-    } catch (e) {
-        console.error("Top logo failed", e);
+    return;
+  }
+
+  if (!window.jspdf?.jsPDF) {
+    if (errorEl) {
+      errorEl.textContent = '⚠️ PDF library could not load. Please check your connection or use Print Result.';
+      errorEl.style.display = 'block';
     }
-    
-    // 2. Header
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.setTextColor(26, 42, 108); // Navy
-    doc.text("IQRA UNIVERSITY ISLAMABAD (IUIC)", pageWidth/2, 50, { align: "center" });
-    
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(100, 116, 139);
-    doc.text("Official Academic Performance Report", pageWidth/2, 56, { align: "center" });
-    
-    // 3. Student Info Box
-    doc.setDrawColor(232, 185, 35); // Gold
-    doc.setLineWidth(0.5);
-    doc.line(20, 62, pageWidth - 20, 62);
-    
-    doc.setFontSize(9);
-    doc.setTextColor(100, 116, 139);
-    doc.text(`STUDENT NAME: ${name.toUpperCase()}`, 20, 70);
-    doc.text(`STUDENT ID: ${id.toUpperCase()}`, 20, 76);
-    doc.text(`DATE: ${new Date().toLocaleDateString()}`, pageWidth - 20, 70, { align: "right" });
-    
-    // 4. Result Summary
-    const resultValue = currentReportType === 'gpa' 
-        ? document.getElementById('resultGPA').textContent 
-        : document.getElementById('cgpaResult').textContent;
-    
-    doc.setFillColor(26, 42, 108); // Navy
-    doc.rect(20, 85, pageWidth - 40, 25, 'F');
-    
-    doc.setTextColor(232, 185, 35); // Gold
-    doc.setFontSize(10);
-    doc.text(currentReportType === 'gpa' ? "SEMESTER GPA" : "CUMULATIVE CGPA", pageWidth/2, 94, { align: "center" });
-    doc.setFontSize(24);
-    doc.text(resultValue, pageWidth/2, 104, { align: "center" });
-    
-    // 5. Data Table
-    let tableData = [];
-    let tableHeaders = [];
-    
-    if (currentReportType === 'gpa') {
-        tableHeaders = [["Subject Name", "Credits", "Grade", "Points"]];
-        const rows = document.querySelectorAll('#subjectsBody tr');
-        rows.forEach(row => {
-            const rowId = row.id.replace('row-', '');
-            const subName = document.getElementById(`name-${rowId}`)?.value || 'Subject';
-            const credits = document.getElementById(`credits-${rowId}`)?.value || '0';
-            const gradeEl = document.getElementById(`grade-${rowId}`);
-            const grade = gradeEl?.options[gradeEl.selectedIndex]?.text.split(' ')[0] || 'N/A';
-            const points = document.getElementById(`points-${rowId}`)?.textContent || '0';
-            tableData.push([subName, credits, grade, points]);
-        });
-    } else {
-        tableHeaders = [["Semester", "GPA", "Credits", "Grade Points"]];
-        const rows = document.querySelectorAll('.semester-row');
-        rows.forEach(row => {
-            const rowId = row.id.split('-')[1];
-            const semNameEl = row.querySelector('.sem-title-text');
-            const semName = semNameEl ? semNameEl.textContent : `Semester ${rowId}`;
-            const gpa = document.getElementById(`sgpa-${rowId}`)?.value || '0';
-            const credits = document.getElementById(`sch-${rowId}`)?.value || '0';
-            const pts = (parseFloat(gpa) * parseFloat(credits)).toFixed(2);
-            tableData.push([semName, gpa, credits, pts]);
-        });
+    return;
+  }
+  if (errorEl) errorEl.style.display = 'none';
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+
+  try {
+    const logoData = await imageToDataURL('Iqra-University-Logo.png');
+    doc.addImage(logoData, 'PNG', pageWidth / 2 - 13, 9, 26, 26);
+  } catch (error) {
+    console.warn('Logo could not be added to the PDF:', error);
+  }
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(26, 42, 108);
+  doc.text('IQRA UNIVERSITY GPA PLANNING REPORT', pageWidth / 2, 45, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(100, 116, 139);
+  doc.text('Unofficial student planning report — not an academic transcript', pageWidth / 2, 51, { align: 'center' });
+
+  doc.setDrawColor(232, 185, 35);
+  doc.setLineWidth(0.5);
+  doc.line(20, 58, pageWidth - 20, 58);
+
+  doc.setFontSize(9);
+  doc.setTextColor(71, 85, 105);
+  doc.text(`STUDENT: ${name.toUpperCase()}`, 20, 67);
+  doc.text(`STUDENT ID: ${studentId.toUpperCase()}`, 20, 73);
+  doc.text(`DATE: ${new Date().toLocaleDateString()}`, pageWidth - 20, 67, { align: 'right' });
+
+  const resultElement = currentReportType === 'gpa'
+    ? document.getElementById('resultGPA')
+    : document.getElementById('cgpaResult');
+  const resultValue = resultElement?.textContent || '0.00';
+
+  doc.setFillColor(26, 42, 108);
+  doc.roundedRect(20, 82, pageWidth - 40, 25, 3, 3, 'F');
+  doc.setTextColor(232, 185, 35);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text(currentReportType === 'gpa' ? 'SEMESTER GPA' : 'CUMULATIVE CGPA', pageWidth / 2, 91, { align: 'center' });
+  doc.setFontSize(22);
+  doc.text(resultValue, pageWidth / 2, 102, { align: 'center' });
+
+  const tableHeaders = currentReportType === 'gpa'
+    ? [['Subject', 'Credits', 'Grade', 'Quality Points']]
+    : [['Semester', 'GPA', 'Credits', 'Quality Points']];
+  const tableData = currentReportType === 'gpa' ? validGPARowsForReport() : validCGPARowsForReport();
+
+  if (!tableData.length) {
+    if (errorEl) {
+      errorEl.textContent = '⚠️ Calculate a result with valid rows before downloading the PDF.';
+      errorEl.style.display = 'block';
     }
-    
+    return;
+  }
+
+  if (typeof doc.autoTable === 'function') {
     doc.autoTable({
-        startY: 120,
-        head: tableHeaders,
-        body: tableData,
-        theme: 'striped',
-        headStyles: { fillColor: [26, 42, 108], textColor: [232, 185, 35] },
-        styles: { fontSize: 9, cellPadding: 3 },
-        margin: { left: 20, right: 20 }
+      startY: 116,
+      head: tableHeaders,
+      body: tableData,
+      theme: 'striped',
+      headStyles: { fillColor: [26, 42, 108], textColor: [255, 231, 159] },
+      styles: { fontSize: 9, cellPadding: 3 },
+      margin: { left: 20, right: 20 }
     });
-    
-    // 6. Footer
-    doc.setFontSize(8);
-    doc.setTextColor(150);
-    doc.text("Developed by Tanzeel Hussain | IUIC Islamabad GPA Calculator", pageWidth/2, 285, { align: "center" });
+  }
 
-    doc.save(`IUIC_Report_${name.replace(/\s+/g, '_')}.pdf`);
-    closeModal('downloadModal');
+  const footerY = doc.internal.pageSize.getHeight() - 12;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(130, 140, 155);
+  doc.text('IUIC GPA Calculator • Student planning tool • Verify official results through the university portal.', pageWidth / 2, footerY, { align: 'center' });
+
+  const safeName = name.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'Student';
+  doc.save(`IUIC_${currentReportType.toUpperCase()}_${safeName}.pdf`);
+  closeModal('downloadModal');
 }
